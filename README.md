@@ -3,7 +3,9 @@ Aqui estão algumas opções e abordagens comuns:
 1. Frameworks e Bibliotecas de Desenvolvimento Web:
 Muitos frameworks de desenvolvimento web oferecem funcionalidades ou extensões para automatizar a criação de formulários com base em modelos de dados (que muitas vezes correspondem às tabelas do banco). Alguns exemplos incluem:
  * Django (Python): O Django possui um ORM (Object-Relational Mapper) que permite definir modelos de dados em Python. A partir desses modelos, o Django pode gerar formulários automaticamente. A classe ModelForm é a principal ferramenta para isso.
-   from django import forms
+
+```
+from django import forms
 from .models import MeuModelo
 
 class MeuForm(forms.ModelForm):
@@ -31,6 +33,7 @@ class MeuForm(forms.ModelForm):
     @endforeach
     <button type="submit">Salvar</button>
 </form>
+```
 
  * Outros Frameworks: Outros frameworks como Spring (Java), ASP.NET Core (C#) e frameworks JavaScript (como Angular e React com bibliotecas de gerenciamento de estado) também oferecem maneiras de vincular modelos de dados a formulários, embora a geração totalmente automática possa exigir mais configuração ou bibliotecas de terceiros.
 2. Ferramentas de Low-Code/No-Code:
