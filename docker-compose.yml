@@ -1,0 +1,73 @@
+services:
+  php:
+    image: php:8.2-apache
+    container_name: hform-php
+    restart: always
+    ports:
+      - "127.0.0.1:58000:80"
+    volumes:
+      - ./src:/var/www/html/src
+    command: |
+      bash -c "
+      echo 'ServerName localhost' >> /etc/apache2/apache2.conf &&
+      apt-get update &&
+      apt-get install -y libicu-dev default-mysql-client &&
+      docker-php-ext-install intl pdo pdo_mysql mysqli &&
+      a2enmod rewrite &&
+      cat > /etc/apache2/sites-available/000-default.conf <<'EOL'
+      <VirtualHost *:80>
+          ServerAdmin webmaster@localhost
+          DocumentRoot /var/www/html
+          ServerName localhost
+
+          <Directory /var/www/html>
+              Options +Indexes +FollowSymLinks
+              AllowOverride All
+              Require all granted
+          </Directory>
+
+          ErrorLog \${APACHE_LOG_DIR}/error.log
+          CustomLog \${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+      EOL
+      apache2-foreground"
+    working_dir: /var/www/html
+    environment:
+      - PHP_MEMORY_LIMIT=256M
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - APACHE_LOG_DIR=/var/log/apache2
+    depends_on:
+      - mysql80
+
+  adminer:
+    image: adminer
+    container_name: hform-adminer
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql80
+      PMA_USER: root
+      PMA_PASSWORD: pass123
+      PMA_DATABASE: databasehform
+    ports:
+      - "58100:8080"
+    depends_on:
+      - mysql80
+
+  mysql80:
+    image: mysql:8.0
+    container_name: hform-mysql
+    restart: unless-stopped
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: hform
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - "33581:3306"
+    volumes:
+      - ./mysql/mysql-data:/var/lib/mysql
+      - ./mysql/mysql-init:/docker-entrypoint-initdb.d
