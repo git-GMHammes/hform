@@ -51,6 +51,38 @@ class Database extends Config
         ],
     ];
 
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $hml_qlikadmin_leitura = [
+        'DSN'          => '',
+        'hostname'     => C67FA34A6FD58618201905D38B72ADFE,
+        'username'     => C74652C4867D06726B56C7025F8DDF80,
+        'password'     => E80FFBEDC1112E960F287F54B4BC2FEA,
+        'database'     => D0D359AA567D3B518405C3E534C72088,
+        'DBDriver'     => C347F2080F5E36125358B6651FF44FBD,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => D2561ED3A712EB14C6D02A83FCBEA6B4,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
     //    /**
     //     * Sample database connection for SQLite3.
     //     *
