@@ -1,1 +1,3 @@
 src/app/Config/Constants.php
+mysql/*
+src/public/security/*
