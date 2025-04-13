@@ -36,8 +36,7 @@ const Header = () => {
   };
 
   return (
-    <header className="header bg-dark fixed-toper">
-
+    <header className="header">
       {/* NOVO HEADER*/}
       <div className="row align-items-center">
         <div className="col-md-3 col-12 text-center text-md-start mb-2 mb-md-0">
@@ -49,7 +48,7 @@ const Header = () => {
         <div className="col-md-4 col-12 text-center mb-2 mb-md-0 text-white">
           <div className="d-flex justify-content-center mb-2">
             <div className="m-2">
-            {formatDateTime()}
+              {formatDateTime()}
             </div>
             <DownModa
               idModal="modalBasic1"
@@ -81,8 +80,7 @@ const Header = () => {
         </div>
       </div>
       {/* NOVO HEADER*/}
-
-    </header >
+    </header>
   );
 };
 

@@ -9,6 +9,12 @@ const Footer = () => {
 
     useEffect(() => {
         const checkHeight = () => {
+            // Não fixa em dispositivos móveis
+            if (window.innerWidth <= 768) {
+                setIsFixed(false);
+                return;
+            }
+            
             // Obtém a altura do conteúdo
             const bodyHeight = document.body.scrollHeight;
             // Obtém a altura da janela do navegador
@@ -48,7 +54,7 @@ const Footer = () => {
 
     return (
         <footer className={`footer ${isFixed ? 'fixed-bottom' : ''} bg-dark py-3`}>
-            {/* NOVO FOOTER*/}
+            {/* MANTENDO O FOOTER ORIGINAL */}
             <div className="row align-items-center">
                 <div className="col-md-3 col-12 text-center text-md-start mb-2 mb-md-0">
                     {/* <img src={logoProderj} alt="Logo Proderj" className="img-fluid" style={{ maxHeight: "40px" }}/> */}
@@ -78,8 +84,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            {/* NOVO FOOTER*/}
-
         </footer>
     );
 };
