@@ -1,4 +1,6 @@
-import { BrowserRouter } from 'react-router-dom';
+// src\public\script\react_modelo_v3\frontend\src\App.jsx
+import { HashRouter } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.css';
 import './styles/global.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,16 +10,22 @@ import Footer from './components/Footer';
 import AppRoutes from './routes';
 
 function App() {
+
+  useEffect(() => {
+    document.body.classList.add('bg-black', 'text-white');
+    document.documentElement.setAttribute('data-bs-theme', 'dark');
+  }, []);
+
   return (
-    <BrowserRouter>
-      <div className="app-container">
+    <HashRouter>
+      <div className="app-container bg-black text-white">
         <Header />
         <main className="main-content">
           <AppRoutes />
         </main>
         <Footer />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
