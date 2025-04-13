@@ -1,3 +1,5 @@
 src/app/Config/Constants.php
 mysql/*
 src/public/security/*
+src/writable/debugbar/*
+src/writable/logs/*

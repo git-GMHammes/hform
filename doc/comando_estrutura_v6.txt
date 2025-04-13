@@ -1,0 +1,303 @@
+# Definir o diretório base
+$baseDir = "C:\laragon\www\hform\src\public"
+$projectDir = "script\react_modelo_v2"
+$fullPath = Join-Path $baseDir $projectDir
+
+# Verificar se o diretório existe e tratar
+if (Test-Path $fullPath) {
+    $confirmation = Read-Host "O diretório $projectDir já existe. Deseja removê-lo e criar novamente? (S/N)"
+    if ($confirmation -eq 'S') {
+        Remove-Item -Path $fullPath -Recurse -Force
+        Write-Host "Diretório anterior removido."
+    } else {
+        Write-Host "Operação cancelada."
+        exit
+    }
+}
+
+# Navegar para o diretório base e criar estrutura
+Set-Location $baseDir
+New-Item -Path $projectDir -ItemType Directory -Force
+Set-Location $projectDir
+
+# Criar projeto Vite
+Write-Host "Criando projeto React com Vite..."
+npm create vite@latest frontend -- --template react
+Set-Location frontend
+npm install
+
+# Função auxiliar para criar arquivo com verificação
+function New-SafeItem {
+    param (
+        [string]$Path,
+        [string]$ItemType,
+        [switch]$Force
+    )
+    
+    if (-not (Test-Path $Path)) {
+        New-Item -Path $Path -ItemType $ItemType -Force:$Force
+    } else {
+        Write-Host "Item já existe: $Path"
+    }
+}
+
+# Criar estrutura adicional dentro de src
+Set-Location "src"
+
+# Criar assets e subdiretórios
+New-SafeItem -Path "assets/images" -ItemType Directory -Force
+
+# Criar components e seus subdiretórios
+$components = @("Auth", "Button", "Footer", "Header", "Nav", "NavHorizontal", "NavVertical")
+foreach ($component in $components) {
+    New-SafeItem -Path "components/$component" -ItemType Directory -Force
+    
+    # Arquivos específicos para Auth
+    if ($component -eq "Auth") {
+        New-SafeItem -Path "components/$component/useSession.js" -ItemType File
+    }
+    # Para outros componentes, criar index.jsx e styles.css (exceto NavHorizontal)
+    elseif ($component -ne "NavHorizontal") {
+        New-SafeItem -Path "components/$component/index.jsx" -ItemType File
+        New-SafeItem -Path "components/$component/styles.css" -ItemType File
+    }
+    # NavHorizontal apenas com index.jsx
+    else {
+        New-SafeItem -Path "components/$component/index.jsx" -ItemType File
+    }
+}
+
+# Criar config
+New-SafeItem -Path "config" -ItemType Directory
+New-SafeItem -Path "config/env.js" -ItemType File
+
+# Criar contexts
+New-SafeItem -Path "contexts" -ItemType Directory
+New-SafeItem -Path "contexts/AuthContext.js" -ItemType File
+New-SafeItem -Path "contexts/ThemeContext.js" -ItemType File
+
+# Criar hooks
+New-SafeItem -Path "hooks" -ItemType Directory
+New-SafeItem -Path "hooks/useApi.js" -ItemType File
+New-SafeItem -Path "hooks/useAuth.js" -ItemType File
+
+# Criar middlewares
+New-SafeItem -Path "middlewares" -ItemType Directory
+New-SafeItem -Path "middlewares/authMiddleware.js" -ItemType File
+New-SafeItem -Path "middlewares/errorHandlerMiddleware.js" -ItemType File
+New-SafeItem -Path "middlewares/loggingMiddleware.js" -ItemType File
+
+# Criar pages e seus subdiretórios
+$pages = @("About", "Home")
+foreach ($page in $pages) {
+    New-SafeItem -Path "pages/$page" -ItemType Directory -Force
+    New-SafeItem -Path "pages/$page/index.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/styles.css" -ItemType File
+}
+
+# Criar páginas CRUD
+$crudPages = @("Secretaria", "Cobranca", "Contato", "Contrato", "Empresa")
+foreach ($page in $crudPages) {
+    New-SafeItem -Path "pages/$page" -ItemType Directory -Force
+    New-SafeItem -Path "pages/$page/AppAtualizar.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/AppCadastrar.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/AppConsultar.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/AppForm.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/AppListar.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/AppListarConteudo.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/styles.css" -ItemType File
+}
+
+# Criar routes
+New-SafeItem -Path "routes" -ItemType Directory
+New-SafeItem -Path "routes/index.jsx" -ItemType File
+
+# Criar services
+New-SafeItem -Path "services" -ItemType Directory
+New-SafeItem -Path "services/api.js" -ItemType File
+New-SafeItem -Path "services/auth.js" -ItemType File
+
+# Criar styles
+New-SafeItem -Path "styles" -ItemType Directory
+New-SafeItem -Path "styles/global.css" -ItemType File
+
+# Criar utils
+New-SafeItem -Path "utils" -ItemType Directory
+New-SafeItem -Path "utils/helpers.js" -ItemType File
+
+# Adicionar index.html na raiz de pages
+New-SafeItem -Path "pages/index.html" -ItemType File
+
+# Voltar para o diretório do projeto
+Set-Location ..
+
+# Instalar pacotes adicionais
+Write-Host "Instalando pacotes adicionais..."
+npm install react-router-dom
+npm install @popperjs/core
+npm install bootstrap
+npm install bootstrap-icons
+npm install axios
+npm install lucide-react
+npm install dotenv
+npm install eslint --save-dev
+npm install prettier --save-dev
+
+# Configurar SVG genérico na pasta de imagens
+Write-Host "Configurando arquivo SVG genérico na pasta assets/images..."
+$imagesPath = "src/assets/images"
+
+# Verificar se a pasta existe
+if (-not (Test-Path $imagesPath)) {
+    New-Item -Path $imagesPath -ItemType Directory -Force | Out-Null
+}
+
+# Copiar o SVG padrão para a pasta de assets/images
+Copy-Item -Path "assets/react.svg" -Destination "$imagesPath/react.svg" -Force
+Write-Host "Arquivo SVG copiado para $imagesPath/react.svg"
+
+# Criar arquivo .env para configurações
+$envContent = @"
+VITE_API_URL=http://localhost:3000/api
+VITE_APP_NAME=hform
+VITE_APP_VERSION=1.0.0
+"@
+Set-Content -Path ".env" -Value $envContent
+
+# Atualizar o arquivo env.js na pasta config
+$envJsContent = @"
+// Configurações de ambiente
+const env = {
+  API_URL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  APP_NAME: import.meta.env.VITE_APP_NAME || 'hform',
+  APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
+  isDevelopment: import.meta.env.DEV,
+  isProduction: import.meta.env.PROD
+};
+
+export default env;
+"@
+Set-Content -Path "src/config/env.js" -Value $envJsContent
+
+# Atualizar o arquivo api.js na pasta services
+$apiJsContent = @"
+import axios from 'axios';
+import env from '../config/env';
+
+const api = axios.create({
+  baseURL: env.API_URL
+});
+
+// Interceptador para adicionar token nas requisições
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer \${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Interceptador para tratar erros nas respostas
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Redirecionar para login ou renovar token
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+"@
+Set-Content -Path "src/services/api.js" -Value $apiJsContent
+
+# Criar conteúdo básico para o App.jsx
+$appJsxContent = @"
+import { BrowserRouter } from 'react-router-dom';
+import './App.css';
+import './styles/global.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import AppRoutes from './routes';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="app-container">
+        <Header />
+        <main className="main-content">
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+"@
+Set-Content -Path "src/App.jsx" -Value $appJsxContent
+
+# Criar conteúdo para o routes/index.jsx
+$routesJsxContent = @"
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from '../pages/Home';
+import About from '../pages/About';
+import SecretariaListar from '../pages/Secretaria/AppListar';
+import SecretariaCadastrar from '../pages/Secretaria/AppCadastrar';
+import SecretariaAtualizar from '../pages/Secretaria/AppAtualizar';
+import SecretariaConsultar from '../pages/Secretaria/AppConsultar';
+import ContratoListar from '../pages/Contrato/AppListar';
+import ContratoCadastrar from '../pages/Contrato/AppCadastrar';
+import ContratoAtualizar from '../pages/Contrato/AppAtualizar';
+import ContratoConsultar from '../pages/Contrato/AppConsultar';
+import { authMiddleware } from '../middlewares/authMiddleware';
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      {/* Rotas públicas */}
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      
+      {/* Rotas de Secretaria */}
+      <Route path="/secretarias" element={<SecretariaListar />} />
+      <Route path="/secretarias/cadastrar" element={<SecretariaCadastrar />} />
+      <Route path="/secretarias/atualizar/:id" element={<SecretariaAtualizar />} />
+      <Route path="/secretarias/consultar/:id" element={<SecretariaConsultar />} />
+      
+      {/* Rotas de Contrato */}
+      <Route path="/contratos" element={<ContratoListar />} />
+      <Route path="/contratos/cadastrar" element={<ContratoCadastrar />} />
+      <Route path="/contratos/atualizar/:id" element={<ContratoAtualizar />} />
+      <Route path="/contratos/consultar/:id" element={<ContratoConsultar />} />
+      
+      {/* Rota de fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+};
+
+export default AppRoutes;
+"@
+Set-Content -Path "src/routes/index.jsx" -Value $routesJsxContent
+
+Write-Host "Estrutura de diretórios criada com sucesso!"
+Write-Host "Projeto React com Vite instalado e estrutura personalizada criada."
+Write-Host "Pacotes adicionais instalados: react-router-dom, bootstrap, axios, etc."
+Write-Host "Para iniciar o projeto, navegue até a pasta frontend e execute: npm run dev"
+
+# Informações finais
+$packageJson = Get-Content -Path "package.json" | ConvertFrom-Json
+Write-Host "Versão do React: $($packageJson.dependencies.react)"
+Write-Host "Versão do Vite: $($packageJson.devDependencies.vite)"

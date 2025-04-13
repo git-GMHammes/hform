@@ -1,0 +1,102 @@
+# Definir o diretório base
+$baseDir = "C:\laragon\www\circuitospro\src\public"
+$projectDir = "script\react_modelo_v1"
+$fullPath = Join-Path $baseDir $projectDir
+
+# Verificar se o diretório existe e tratar
+if (Test-Path $fullPath) {
+    $confirmation = Read-Host "O diretório $projectDir já existe. Deseja removê-lo e criar novamente? (S/N)"
+    if ($confirmation -eq 'S') {
+        Remove-Item -Path $fullPath -Recurse -Force
+        Write-Host "Diretório anterior removido."
+    } else {
+        Write-Host "Operação cancelada."
+        exit
+    }
+}
+
+# Navegar para o diretório base e criar estrutura
+Set-Location $baseDir
+New-Item -Path $projectDir -ItemType Directory -Force
+Set-Location $projectDir
+
+# Criar projeto Vite
+Write-Host "Criando projeto React com Vite..."
+npm create vite@latest frontend -- --template react
+Set-Location frontend
+npm install
+
+# Função auxiliar para criar arquivo com verificação
+function New-SafeItem {
+    param (
+        [string]$Path,
+        [string]$ItemType,
+        [switch]$Force
+    )
+    
+    if (-not (Test-Path $Path)) {
+        New-Item -Path $Path -ItemType $ItemType -Force:$Force
+    } else {
+        Write-Host "Item já existe: $Path"
+    }
+}
+
+# Criar estrutura adicional dentro de src
+Set-Location "src"
+
+# Criar components e seus subdiretórios
+$components = @("Header", "Footer", "Button")
+foreach ($component in $components) {
+    New-SafeItem -Path "components/$component" -ItemType Directory -Force
+    New-SafeItem -Path "components/$component/index.jsx" -ItemType File
+    New-SafeItem -Path "components/$component/styles.css" -ItemType File
+}
+
+# Criar pages e seus subdiretórios
+$pages = @("Home", "About")
+foreach ($page in $pages) {
+    New-SafeItem -Path "pages/$page" -ItemType Directory -Force
+    New-SafeItem -Path "pages/$page/index.jsx" -ItemType File
+    New-SafeItem -Path "pages/$page/styles.css" -ItemType File
+}
+
+# Criar contexts
+New-SafeItem -Path "contexts" -ItemType Directory
+New-SafeItem -Path "contexts/AuthContext.js" -ItemType File
+New-SafeItem -Path "contexts/ThemeContext.js" -ItemType File
+
+# Criar hooks
+New-SafeItem -Path "hooks" -ItemType Directory
+New-SafeItem -Path "hooks/useAuth.js" -ItemType File
+New-SafeItem -Path "hooks/useApi.js" -ItemType File
+
+# Criar services
+New-SafeItem -Path "services" -ItemType Directory
+New-SafeItem -Path "services/api.js" -ItemType File
+New-SafeItem -Path "services/auth.js" -ItemType File
+
+# Criar assets e seu subdiretório
+New-SafeItem -Path "assets/images" -ItemType Directory -Force
+
+# Criar utils
+New-SafeItem -Path "utils" -ItemType Directory
+New-SafeItem -Path "utils/helpers.js" -ItemType File
+
+# Criar styles
+New-SafeItem -Path "styles" -ItemType Directory
+New-SafeItem -Path "styles/global.css" -ItemType File
+
+# Criar routes.jsx
+New-SafeItem -Path "routes.jsx" -ItemType File
+
+# Voltar para o diretório do projeto
+Set-Location ..
+
+Write-Host "Estrutura de diretórios criada com sucesso!"
+Write-Host "Projeto React com Vite instalado e estrutura personalizada criada."
+Write-Host "Para iniciar o projeto, use: npm run dev"
+ 
+npm list react
+npm list
+npm list --dev
+ 

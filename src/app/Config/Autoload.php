@@ -90,5 +90,21 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $helpers = [];
+    public $helpers = [
+        "myAnonimo",
+        "myArray",
+        "myCaptcha",
+        "myChar",
+        "myCookie",
+        "myCPFvalidation",
+        "myDate",
+        "myEmulaSSO",
+        "myEndPoint",
+        "myFake",
+        "myIcon",
+        "myIdUFF",
+        "myPrint",
+        "myResolution",
+        "myTerminalTraslation"
+    ];
 }

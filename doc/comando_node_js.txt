@@ -1,0 +1,164 @@
+# Executar para rodar aplicação:
+npm run dev
+
+# Instalação Correta do React CDN:
+
+npm create vite@latest frontend -- --template react
+npm install react-router-dom
+npm install @popperjs/core
+npm install bootstrap
+npm install bootstrap-icons
+npm install axios
+npm install lucide-react
+npm install react-hook-form
+ 
+cd C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend
+npm install
+
+cd C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend
+npm list
+ 
+frontend@0.0.0 C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend
++-- @eslint/js@9.21.0
++-- @popperjs/core@2.11.8
++-- @types/react-dom@19.0.4
++-- @types/react@19.0.10
++-- @vitejs/plugin-react@4.3.4
++-- axios@1.8.3
++-- bootstrap-icons@1.11.3
++-- bootstrap@5.3.3
++-- eslint-plugin-react-hooks@5.2.0
++-- eslint-plugin-react-refresh@0.4.19
++-- eslint@9.21.0
++-- globals@15.15.0
++-- lucide-react@0.482.0
++-- react-dom@19.0.0
++-- react-hook-form@7.54.2
++-- react-router-dom@7.3.0
++-- react@19.0.0
+`-- vite@6.2.1 
+
+cd C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend
+npm run dev -- --host 127.0.0.1 --port 7777
+ 
+/*
+  possíveis ambientes dev para react:
+  [DEV1/Docker]
+  npm run dev -- --host 127.0.0.1 --port 7777
+  
+  [DEV2/Laragon]
+  npm run dev -- --host localhost --port 9999
+*/
+ 
+// C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend\vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig(({ command }) => {
+  const config = {
+    plugins: [react()],
+    base: './', // Use path relativo
+    build: {
+      assetsDir: 'assets',
+      emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          manualChunks: undefined
+        }
+      }
+    },
+    server: {
+      cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        credentials: true
+      }
+    }
+  };
+
+  // Adiciona o proxy apenas em modo de desenvolvimento
+  if (command === 'serve') {
+    config.server = {
+      cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        credentials: true
+      },
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:59000',
+          changeOrigin: true,
+          secure: false,
+          withCredentials: true,
+          rewrite: (path) => path.replace(/^\/api/, '/src/public')
+        }
+      }
+    };
+  }
+
+  return config;
+});
+
+cd C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend
+npm run build
+
+# ESTRTURA de INICIALIZAÇÃO	
+[src\public\script\react_modelo_v1\frontend\src\main.jsx] <-Invoca-> [src\public\script\react_modelo_v1\frontend\src\App.jsx] <-Invoca-> [src\public\script\react_modelo_v1\frontend\src\routes\index.jsx]
+
+// C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend\src\main.jsx
+import ReactDOM from 'react-dom/client';
+import { HashRouter } from 'react-router-dom';
+import App from './App';
+import './index.css';
+import '@popperjs/core/dist/umd/popper.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// Definir o tema escuro
+document.documentElement.setAttribute('data-bs-theme', 'dark');
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <HashRouter>
+    <App />
+  </HashRouter>
+);
+
+// C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend\src\App.jsx
+import React from 'react';
+import Routes from './routes/index.jsx';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import './App.css'; // Certifique-se de importar o CSS
+
+function App() {
+  return (
+    <div className="app">
+      <Header />
+      <main className="main-content">
+        <Routes />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
+
+// C:\laragon\www\hform\src\public\script\react_modelo_v1\frontend\src\routes\index.jsx
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from '../pages/Home';
+import TesteSession from '../pages/TesteSession';
+
+const RouteConfig = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/teste-session" element={<TesteSession />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+    );
+};
+
+export default RouteConfig;
+
