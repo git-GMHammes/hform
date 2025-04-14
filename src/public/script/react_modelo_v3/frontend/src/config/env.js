@@ -38,7 +38,7 @@ const determineEnvironment = () => {
     return 'DEV1';
   } else if (HOSTNAME === 'localhost' && PORT === '9999') {
     return 'DEV2';
-  } else if (HOSTNAME === '127.0.0.1' && PORT === '59000') {
+  } else if (HOSTNAME === '127.0.0.1' && PORT === '57000') {
     return 'DEV1_BUILD';
   } else if (HOSTNAME === '127.0.0.1' && PORT === '80') {
     return 'DEV2_BUILD';
@@ -58,7 +58,7 @@ const determineEnvironment = () => {
   }
 
   // Ambiente padrão caso nenhum outro seja detectado
-  return 'DEV2';
+  return 'DEV1';
 };
 
 // Definição das constantes de ambiente
@@ -70,7 +70,7 @@ const ENV = {
     // Para desenvolvimento com proxy Vite
     DEV1: '/api/index.php/',
     DEV2: '/api/index.php/',
-    DEV1_BUILD: 'http://127.0.0.1:59000/src/public/index.php/',
+    DEV1_BUILD: 'http://127.0.0.1:57000/src/public/index.php/',
     DEV2_BUILD: 'http://127.0.0.1:80/sgcpro/src/public/index.php/',
     HML: 'https://www.hml.proderj.rj.gov.br/',
     PRD: 'https://www.prd.rj.gov.br/',
@@ -82,9 +82,9 @@ const ENV = {
   // Definição das URLs por ambiente
   URL: {
     // Para desenvolvimento com proxy Vite
-    DEV1: 'http://127.0.0.1:59000/',
+    DEV1: 'http://127.0.0.1:57000/',
     DEV2: 'http://localhost/sgcpro/',
-    DEV1_BUILD: 'http://127.0.0.1:59000/src/public/index.php/',
+    DEV1_BUILD: 'http://127.0.0.1:57000/src/public/index.php/',
     DEV2_BUILD: 'http://127.0.0.1:80/sgcpro/src/public/index.php/',
     HML: 'https://www.hml.proderj.rj.gov.br/',
     PRD: 'https://www.prd.rj.gov.br/',

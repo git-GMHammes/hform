@@ -3,9 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import FormularioBootstrap from '../pages/FormularioBootstrap';
+import FormularioHformConfig from '../pages/FormularioHformConfig';
 
 const AppRoutes = () => {
-  return (
+return (
     <Routes>
       {/* Rotas publicas */}
       <Route path="/" element={<Home />} />
@@ -13,6 +14,7 @@ const AppRoutes = () => {
 
       {/* Rotas publicas */}
       <Route path="/formulario/teste" element={<FormularioBootstrap />} />
+      <Route path="/formulario/config" element={<FormularioHformConfig />} />
 
       {/* Rota de redirecionamento */}
       

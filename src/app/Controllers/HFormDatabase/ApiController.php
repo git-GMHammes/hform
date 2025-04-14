@@ -5,11 +5,12 @@ namespace App\Controllers\HFormDatabase;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 # 
-use App\Controllers\HFormDatabase\DbController;
-// use App\Controllers\Pattern\TokenCsrfController;
-// use App\Controllers\Pattern\SystemMessageController;
-// use App\Controllers\Pattern\ObjetoDbController;
-// use App\Controllers\Pattern\SystemUploadDbController;
+use App\Controllers\HFormDatabase\DbControllerQlikAdmin;
+use App\Controllers\HFormDatabase\DbControllerIntranetDegase;
+# use App\Controllers\Pattern\TokenCsrfController;
+# use App\Controllers\Pattern\SystemMessageController;
+# use App\Controllers\Pattern\ObjetoDbController;
+# use App\Controllers\Pattern\SystemUploadDbController;
 # 
 use Exception;
 
@@ -19,13 +20,15 @@ class ApiController extends ResourceController
     private $ModelResponse;
     private $uri;
     private $tokenCsrf;
-    private $DbController;
+    private $DbControllerQlikAdmin;
+    private $DbControllerIntranetDegase;
     private $message;
 
     public function __construct()
     {
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
-        $this->DbController = new DbController();
+        $this->DbControllerQlikAdmin = new DbControllerQlikAdmin();
+        $this->DbControllerIntranetDegase = new DbControllerIntranetDegase();
         // $this->tokenCsrf = new TokenCsrfController();
         // $this->message = new SystemMessageController();
         #
@@ -88,10 +91,11 @@ class ApiController extends ResourceController
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
         $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
         #
-        $requestDb = $this->DbController->showHDataBase();
-        // myPrint('$requestDb :: ', $requestDb);
         try {
             #
+            $requestDb[] = $this->DbControllerQlikAdmin->showHDataBase();
+            $requestDb[] = $this->DbControllerIntranetDegase->showHDataBase();
+            // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
             $response = $this->response->setStatusCode(201)->setJSON($apiRespond);
@@ -128,7 +132,7 @@ class ApiController extends ResourceController
         #
         try {
             #
-            $requestDb = $this->DbController->showHTable();
+            $requestDb = $this->DbControllerQlikAdmin->showHTable();
             // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
@@ -174,10 +178,10 @@ class ApiController extends ResourceController
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
         $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
         #
-        $requestDb = $this->DbController->ShowHColumnFromTable($parameter);
-        // myPrint('$requestDb :: ', $requestDb);
         try {
             #
+            $requestDb = $this->DbControllerQlikAdmin->ShowHColumnFromTable($parameter);
+            // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
             $response = $this->response->setStatusCode(201)->setJSON($apiRespond);
@@ -222,10 +226,10 @@ class ApiController extends ResourceController
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
         $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
         #
-        $requestDb = $this->DbController->ShowHColumnTipoFromTable($parameter);
-        // myPrint('$requestDb :: ', $requestDb);
         try {
             #
+            $requestDb = $this->DbControllerQlikAdmin->ShowHColumnTipoFromTable($parameter);
+            // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
             $response = $this->response->setStatusCode(201)->setJSON($apiRespond);

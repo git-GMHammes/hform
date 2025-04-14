@@ -1,39 +1,71 @@
+// src\public\script\react_modelo_v3\frontend\src\pages\FormularioBootstrap\index.jsx
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form'; // Importando FormProvider
+import { useForm, FormProvider } from 'react-hook-form';
 import HformInputTextMask from '../../components/HForm/HformInputTextMask';
 import HformInputTextLetters from '../../components/HForm/HformInputTextLetters';
 import HformInputTextNumber from '../../components/HForm/HformInputTextNumber';
 
 const FormularioBootstrap = () => {
-    // Inicialização do react-hook-form
+    // Inicialização do react-hook-form com valores padrão
     const methods = useForm({
         mode: 'onChange',
         defaultValues: {
-            apenasNumeros: '',
-            apenasTexto: '',
-            campoMascara: '',
-            cpf: '',
-            cnpj: '',
-            telefoneFixo: '',
-            telefoneCelular: '',
-            mascaraCustomizada: '',
+            nome: 'Gustavo Hammes',
+            endereco: 'Estrada de Cima com a Rua de Baixo',
+            cpf: '123.123.123-12',
+            cnpj: '12.345.678/0001-12',
+            telefoneFixo: '(21)1234-5678',
+            telefoneCelular: '(21)91234-5678',
+            observacoes: 'Qualquer observação',
+            campoMascara: '123.456.789/123.456',
+            mascaraCustomizada: '123.456.789-12',
+            campoCustomizado: 'Esse texto não possui caracter especial',
+            numeroInteiro: '123',
+            numeroDecimal: '123,45',
+            valorMonetario: '123,45',
+            numeroPersonalizado: '123.123,12',
         }
     });
 
     const {
         handleSubmit,
+        getValues,
     } = methods;
 
-    // Função de submissão do formulário
-    const onSubmit = (data) => {
-        console.log('Form submitted!', data);
-        alert(JSON.stringify(data, null, 2));
+    // Função de submissão do formulário completo
+    const onSubmitCompleto = (data) => {
+        console.log('Formulário Completo:', JSON.stringify(data, null, 2));
     };
 
-    // Função acionadora de evento (pode ser usada com qualquer evento)
-    const acaoPersonalizada = (evento) => {
-        handleSubmit(onSubmit)();
-        console.log(`Formulário submetido por: ${evento}`);
+    // Funções de submissão para os diferentes filtros
+    const onSubmitFiltro1 = () => {
+        // Pega apenas os campos relevantes para o Filtro 1
+        const filteredData = {
+            nome: getValues('nome'),
+            cpf: getValues('cpf'),
+            telefoneFixo: getValues('telefoneFixo')
+        };
+        console.log('Filtro 1 (Dados Pessoais):', JSON.stringify(filteredData, null, 2));
+    };
+
+    const onSubmitFiltro2 = () => {
+        // Pega apenas os campos relevantes para o Filtro 2
+        const filteredData = {
+            cnpj: getValues('cnpj'),
+            valorMonetario: getValues('valorMonetario'),
+            numeroDecimal: getValues('numeroDecimal')
+        };
+        console.log('Filtro 2 (Dados Financeiros):', JSON.stringify(filteredData, null, 2));
+    };
+
+    const onSubmitFiltro3 = () => {
+        // Pega apenas os campos relevantes para o Filtro 3
+        const filteredData = {
+            endereco: getValues('endereco'),
+            telefoneCelular: getValues('telefoneCelular'),
+            numeroInteiro: getValues('numeroInteiro')
+        };
+        console.log('Filtro 3 (Dados de Contato):', JSON.stringify(filteredData, null, 2));
     };
 
     return (
@@ -45,9 +77,107 @@ const FormularioBootstrap = () => {
                             <h2 className="mb-0">Formulário com React HForm</h2>
                         </div>
                         <div className="card-body">
-                            {/* A solução é envolver todo o formulário com FormProvider */}
+                            {/* FormProvider envolve todo o formulário para compartilhar o contexto */}
                             <FormProvider {...methods}>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Campo de nome usando tipoTexto="Nome" */}
+                                    <HformInputTextLetters
+                                        name="nome"
+                                        label="Nome Completo:"
+                                        accessKey="n"
+                                        required={true}
+                                        tabIndex="1"
+                                        tipoTexto="Nome"
+                                        autoFocus={false}
+                                        maxLength="100"
+                                        minLength="3"
+                                        dataListOptions={["Maria da Silva", "João d'Avilla"]}
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Campo de endereço usando tipoTexto="Endereco" */}
+                                    <HformInputTextLetters
+                                        name="endereco"
+                                        label="Endereço Completo:"
+                                        accessKey="e"
+                                        required={true}
+                                        tabIndex="2"
+                                        tipoTexto="Endereco"
+                                        maxLength="200"
+                                        minLength="5"
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Exemplo com máscara de CPF usando tipoMask="CPF" */}
+                                    <HformInputTextMask
+                                        name="cpf"
+                                        label="CPF:"
+                                        accessKey="c"
+                                        required={true}
+                                        tabIndex="2"
+                                        tipoMask="CPF"
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Exemplo com máscara de CNPJ usando tipoMask="CNPJ" */}
+                                    <HformInputTextMask
+                                        name="cnpj"
+                                        label="CNPJ:"
+                                        accessKey="j"
+                                        readOnly={false}
+                                        tabIndex="3"
+                                        tipoMask="CNPJ"
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Exemplo com máscara de telefone fixo */}
+                                    <HformInputTextMask
+                                        name="telefoneFixo"
+                                        label="Telefone Fixo:"
+                                        accessKey="f"
+                                        required={true}
+                                        tabIndex="4"
+                                        tipoMask="TelefoneFixo"
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Exemplo com máscara de telefone celular */}
+                                    <HformInputTextMask
+                                        name="telefoneCelular"
+                                        label="Telefone Celular:"
+                                        accessKey="t"
+                                        disabled={false}
+                                        tabIndex="5"
+                                        tipoMask="TelefoneCelular"
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                    {/* Campo de observações usando tipoTexto="Livre" (padrão) */}
+                                    <HformInputTextLetters
+                                        name="observacoes"
+                                        label="Observações:"
+                                        accessKey="o"
+                                        tabIndex="3"
+                                        tipoTexto="Livre"
+                                        maxLength="500"
+                                        placeholder="Digite suas observações aqui..."
+                                    />
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Exemplo com a máscara padrão usando tipoMask="Padrao" */}
                                     <HformInputTextMask
                                         name="campoMascara"
@@ -58,47 +188,10 @@ const FormularioBootstrap = () => {
                                         tipoMask="Padrao"
                                         dataListOptions={["123.456.789/123.456"]}
                                     />
-
-                                    {/* Exemplo com máscara de CPF usando tipoMask="CPF" */}
-                                    <HformInputTextMask
-                                        name="cpf"
-                                        label="CPF:"
-                                        accessKey="c"
-                                        required={true}
-                                        tabIndex="2"
-                                        tipoMask="CPF"
-                                    />
-
-                                    {/* Exemplo com máscara de CNPJ usando tipoMask="CNPJ" */}
-                                    <HformInputTextMask
-                                        name="cnpj"
-                                        label="CNPJ:"
-                                        accessKey="j"
-                                        readOnly={false}
-                                        tabIndex="3"
-                                        tipoMask="CNPJ"
-                                    />
-
-                                    {/* Exemplo com máscara de telefone fixo */}
-                                    <HformInputTextMask
-                                        name="telefoneFixo"
-                                        label="Telefone Fixo:"
-                                        accessKey="f"
-                                        required={true}
-                                        tabIndex="4"
-                                        tipoMask="TelefoneFixo"
-                                    />
-
-                                    {/* Exemplo com máscara de telefone celular */}
-                                    <HformInputTextMask
-                                        name="telefoneCelular"
-                                        label="Telefone Celular:"
-                                        accessKey="t"
-                                        disabled={false}
-                                        tabIndex="5"
-                                        tipoMask="TelefoneCelular"
-                                    />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Exemplo de máscara personalizada (com sobrescrita) */}
                                     <HformInputTextMask
                                         name="mascaraCustomizada"
@@ -114,44 +207,10 @@ const FormularioBootstrap = () => {
                                         title="Campo personalizado"
                                         errorMessage="Formato inválido"
                                     />
-
-                                    {/* Campo de nome usando tipoTexto="Nome" */}
-                                    <HformInputTextLetters
-                                        name="nome"
-                                        label="Nome Completo:"
-                                        accessKey="n"
-                                        required={true}
-                                        tabIndex="1"
-                                        tipoTexto="Nome"
-                                        autoFocus={false}
-                                        maxLength="100"
-                                        minLength="3"
-                                        dataListOptions={["Maria da Silva", "João d'Avilla"]}
-                                    />
-
-                                    {/* Campo de endereço usando tipoTexto="Endereco" */}
-                                    <HformInputTextLetters
-                                        name="endereco"
-                                        label="Endereço Completo:"
-                                        accessKey="e"
-                                        required={true}
-                                        tabIndex="2"
-                                        tipoTexto="Endereco"
-                                        maxLength="200"
-                                        minLength="5"
-                                    />
-
-                                    {/* Campo de observações usando tipoTexto="Livre" (padrão) */}
-                                    <HformInputTextLetters
-                                        name="observacoes"
-                                        label="Observações:"
-                                        accessKey="o"
-                                        tabIndex="3"
-                                        tipoTexto="Livre"
-                                        maxLength="500"
-                                        placeholder="Digite suas observações aqui..."
-                                    />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Campo personalizado */}
                                     <HformInputTextLetters
                                         name="campoCustomizado"
@@ -164,7 +223,10 @@ const FormularioBootstrap = () => {
                                         errorMessage="Digite apenas letras e espaços"
                                         placeholder="Digite apenas letras e espaços"
                                     />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Campo para número inteiro usando tipoNumero="Inteiro" */}
                                     <HformInputTextNumber
                                         name="numeroInteiro"
@@ -178,7 +240,10 @@ const FormularioBootstrap = () => {
                                         minLength="1"
                                         dataListOptions={["123-456", "789"]}
                                     />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Campo para número decimal usando tipoNumero="Decimal" */}
                                     <HformInputTextNumber
                                         name="numeroDecimal"
@@ -190,7 +255,10 @@ const FormularioBootstrap = () => {
                                         maxLength="30"
                                         minLength="1"
                                     />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Campo para valor monetário usando tipoNumero="Monetario" */}
                                     <HformInputTextNumber
                                         name="valorMonetario"
@@ -203,7 +271,10 @@ const FormularioBootstrap = () => {
                                         minLength="1"
                                         placeholder="R$ 0,00"
                                     />
-
+                                </form>
+                            </FormProvider>
+                            <FormProvider {...methods}>
+                                <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                     {/* Campo personalizado com padrão customizado */}
                                     <HformInputTextNumber
                                         name="numeroPersonalizado"
@@ -217,31 +288,53 @@ const FormularioBootstrap = () => {
                                         placeholder="Ex: 12345"
                                         maxLength="10"
                                     />
-
-                                    <div className="d-flex gap-2 mb-3">
+                                </form>
+                            </FormProvider>
+                            <div className="d-flex gap-2 mb-3 mt-4">
+                                <FormProvider {...methods}>
+                                    <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                         <button
                                             type="submit"
                                             className="btn btn-primary"
                                         >
-                                            Enviar (onSubmit)
+                                            Enviar Formulário Completo
                                         </button>
+                                    </form>
+                                </FormProvider>
+                                <FormProvider {...methods}>
+                                    <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                         <button
                                             type="button"
                                             className="btn btn-success"
-                                            onClick={() => acaoPersonalizada('onClick')}
+                                            onClick={onSubmitFiltro1}
                                         >
-                                            Enviar (onClick)
+                                            Filtro 1
                                         </button>
+                                    </form>
+                                </FormProvider>
+                                <FormProvider {...methods}>
+                                    <form onSubmit={handleSubmit(onSubmitCompleto)}>
                                         <button
                                             type="button"
                                             className="btn btn-info"
-                                            onMouseUp={() => acaoPersonalizada('onMouseUp')}
+                                            onClick={onSubmitFiltro2}
                                         >
-                                            Enviar (onMouseUp)
+                                            Filtro 2
                                         </button>
-                                    </div>
-                                </form>
-                            </FormProvider>
+                                    </form>
+                                </FormProvider>
+                                <FormProvider {...methods}>
+                                    <form onSubmit={handleSubmit(onSubmitCompleto)}>
+                                        <button
+                                            type="button"
+                                            className="btn btn-warning"
+                                            onClick={onSubmitFiltro3}
+                                        >
+                                            Filtro 3
+                                        </button>
+                                    </form>
+                                </FormProvider>
+                            </div>
                         </div>
                     </div>
                 </div>

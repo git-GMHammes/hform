@@ -6,13 +6,13 @@ use CodeIgniter\Database\Query;
 use CodeIgniter\Model;
 # use App\Controllers\Pattern\SystemMessageController;
 
-class HFormDatabaseModel extends Model
+class HFormQlikAdminModel extends Model
 {
 
-    protected $DBGroup = DATABASE_CONNECTION;
+    protected $DBGroup = DATABASE_CONNECTION_QLIKADMIN;
 
-    protected $table = 'tabela';
-    protected $primaryKey = 'id';
+    protected $table = '';
+    protected $primaryKey = '';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $allowedFields = [];

@@ -83,6 +83,38 @@ class Database extends Config
         ],
     ];
 
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $hml_intranet_degase_leitura = [
+        'DSN'          => '',
+        'hostname'     => A9FB502A0FE04C97EE78BA29DB489FBA,
+        'username'     => C295021637A9AF9055EE8E4876728BDA,
+        'password'     => BB4637745121BF1A2D31CCDDAB3F520D,
+        'database'     => AD07D22805A6BF852C07053A59AC42F3,
+        'DBDriver'     => C60B5B89657C2373FE6CAF94B8FA7663,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => E549318C7C3D5224A5BD6E04FA43D6FA,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
     //    /**
     //     * Sample database connection for SQLite3.
     //     *

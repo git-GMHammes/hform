@@ -6,10 +6,10 @@ use CodeIgniter\Database\Query;
 use CodeIgniter\Model;
 use App\Controllers\Pattern\SystemMessageController;
 
-class BaseMainConfigurationModel extends Model
+class BaseMainQlikAdminModel extends Model
 {
 
-    protected $DBGroup = DATABASE_CONNECTION;
+    protected $DBGroup = DATABASE_CONNECTION_QLIKADMIN;
 
     protected $table = '';
     protected $primaryKey = '';

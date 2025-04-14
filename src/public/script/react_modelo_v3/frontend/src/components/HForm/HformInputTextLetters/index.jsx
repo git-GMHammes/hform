@@ -1,3 +1,4 @@
+// src\public\script\react_modelo_v3\frontend\src\pages\FormularioBootstrap\index.jsx
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
