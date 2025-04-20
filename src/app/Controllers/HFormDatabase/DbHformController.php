@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\BaseMainIntranetDegaseModel;
 use Exception;
 
-class DbControllerIntranetDegase extends BaseController
+class DbHformController extends BaseController
 {
     // private $ModelUpload;
     private $ModelHForm;

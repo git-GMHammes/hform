@@ -3,10 +3,10 @@
 namespace App\Controllers\HFormDatabase;
 
 use App\Controllers\BaseController;
-use App\Models\BaseMainQlikAdminModel;
+use App\Models\BaseMainIntranetDegaseModel;
 use Exception;
 
-class DbControllerQlikAdmin extends BaseController
+class DbSgcController extends BaseController
 {
     // private $ModelUpload;
     private $ModelHForm;
@@ -17,7 +17,7 @@ class DbControllerQlikAdmin extends BaseController
 
     public function __construct()
     {
-        $this->ModelHForm = new BaseMainQlikAdminModel();
+        $this->ModelHForm = new BaseMainIntranetDegaseModel();
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
     }
 
