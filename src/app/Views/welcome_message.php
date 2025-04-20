@@ -198,7 +198,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color: black; color: white;>
 
 <!-- HEADER: MENU + HEROE SECTION -->
 <header>

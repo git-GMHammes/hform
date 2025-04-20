@@ -37,25 +37,28 @@ services:
       - APACHE_DOCUMENT_ROOT=/var/www/html
       - APACHE_LOG_DIR=/var/log/apache2
     depends_on:
-      - mysql80
+      - mysql-hform
 
   adminer:
     image: adminer
     container_name: hform-adminer
     restart: unless-stopped
     environment:
-      PMA_HOST: mysql80
+      PMA_HOST: mysql-hform
       PMA_USER: root
       PMA_PASSWORD: pass123
-      PMA_DATABASE: databasehform
     ports:
       - "57100:8080"
     depends_on:
-      - mysql80
+      - mysql-hform
+      - mysql-qlikadmin
+      - mysql-sgp
+      - mysql-sgc
 
-  mysql80:
+  # Banco de dados 1: hform
+  mysql-hform:
     image: mysql:8.0
-    container_name: hform-mysql
+    container_name: mysql-hform
     restart: unless-stopped
     command: |
       --character-set-server=utf8mb4
@@ -67,7 +70,87 @@ services:
       MYSQL_CHARSET: utf8mb4
       MYSQL_COLLATION: utf8mb4_general_ci
     ports:
-      - "33571:3306"
+      - "33710:3306"
     volumes:
-      - ./mysql/mysql-data:/var/lib/mysql
-      - ./mysql/mysql-init:/docker-entrypoint-initdb.d
+      - ./mysql/hform/mysql-data:/var/lib/mysql
+      - ./mysql/hform/mysql-init:/docker-entrypoint-initdb.d
+
+  # Banco de dados 2: qlikadmin
+  mysql-qlikadmin:
+    image: mysql:8.0
+    container_name: mysql-qlikadmin
+    restart: unless-stopped
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: qlikadmin
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - "33711:3306"
+    volumes:
+      - ./mysql/qlikadmin/mysql-data:/var/lib/mysql
+      - ./mysql/qlikadmin/mysql-init:/docker-entrypoint-initdb.d
+
+  # Banco de dados 3: sgp
+  mysql-sgp:
+    image: mysql:8.0
+    container_name: mysql-sgp
+    restart: unless-stopped
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: sgp
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - "33712:3306"
+    volumes:
+      - ./mysql/sgp/mysql-data:/var/lib/mysql
+      - ./mysql/sgp/mysql-init:/docker-entrypoint-initdb.d
+
+  # Banco de dados 4: sgc
+  mysql-sgc:
+    image: mysql:8.0
+    container_name: mysql-sgc
+    restart: unless-stopped
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: sgc
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - "33713:3306"
+    volumes:
+      - ./mysql/sgc/mysql-data:/var/lib/mysql
+      - ./mysql/sgc/mysql-init:/docker-entrypoint-initdb.d
+
+  # Banco de dados 5: intranetdeegase
+  mysql-intranetdeegase:
+    image: mysql:8.0
+    container_name: mysql-intranetdeegase
+    restart: unless-stopped
+    command: |
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pass123
+      MYSQL_DATABASE: intranetdegase
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    ports:
+      - "33714:3306"
+    volumes:
+      - ./mysql/intranetdeegase/mysql-data:/var/lib/mysql
+      - ./mysql/intranetdeegase/mysql-init:/docker-entrypoint-initdb.d

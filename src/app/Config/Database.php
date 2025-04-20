@@ -115,6 +115,134 @@ class Database extends Config
         ],
     ];
 
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $dev_hform = [
+        'DSN'          => '',
+        'hostname'     => AC3A6AFC41CEE504EF17CAB2E279F349,
+        'username'     => B6B82370878BE24D70AE51EFA7B753DE,
+        'password'     => C4606CBEFD602055ED894D6FF5F6454C,
+        'database'     => DA9A66CCDE4EB42E308A187FF5EAA7A4,
+        'DBDriver'     => A9821CA593DA36A41CA0C89C894FA379,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => D7CA8286BA4D1A81375713C27B431E48,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $dev_qlikadmin_hform = [
+        'DSN'          => '',
+        'hostname'     => DDEBF4FEB3047FF69D2924758D83EC53,
+        'username'     => F221DDE1BCE1DC4D4F9EB5BA0798CF9E,
+        'password'     => B7067E7990E028B4CC95FD73CB33DFFA,
+        'database'     => C9A5A2384BCB1BAB8B5B8D2AC86AA51D,
+        'DBDriver'     => CB6EB036688C4C4AE683C9A85573B811,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => A9E4ACDB3551CFAD6561687E0B8C1012,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $dev_sgc_hform = [
+        'DSN'          => '',
+        'hostname'     => BAC601E829A2D481A0E6A8971F7E8319,
+        'username'     => AA05AEB7C2C83EC5CC5FDE98274A5C0D,
+        'password'     => DB66A799AFAF5A6523BBDEAE1178D2A7,
+        'database'     => E0711BFA8C3A919A6497DA8931520350,
+        'DBDriver'     => DCB6D081B8DAE09607F3E7A8AD5D7191,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => B22F51CB7599B1D4CA0AAA0465D46AE5,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
+    public array $dev_sgP_hform = [
+        'DSN'          => '',
+        'hostname'     => BFE13EDE23F40A6B4E2B68FB9B5E7227,
+        'username'     => DBD4F51CE226381032D54C90A0D0ACA4,
+        'password'     => EDB62190B22B578D807DFFFE4CF9805B,
+        'database'     => E6CBF9FF07F348AACDB49EC22C8B854F,
+        'DBDriver'     => C56F631FC263053C5B44ACC7998342D0,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => BFE13EDE23F40A6B4E2B68FB9B5E7227,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
     //    /**
     //     * Sample database connection for SQLite3.
     //     *
