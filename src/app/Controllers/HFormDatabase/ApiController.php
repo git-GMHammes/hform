@@ -5,8 +5,11 @@ namespace App\Controllers\HFormDatabase;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 # 
-use App\Controllers\HFormDatabase\DbControllerQlikAdmin;
-use App\Controllers\HFormDatabase\DbControllerIntranetDegase;
+use App\Controllers\HFormDatabase\DbIntranetDegaseController;
+use App\Controllers\HFormDatabase\DbQlikAdminController;
+use App\Controllers\HFormDatabase\DbHformController;
+use App\Controllers\HFormDatabase\DbSgcController;
+use App\Controllers\HFormDatabase\DbSgpController;
 # use App\Controllers\Pattern\TokenCsrfController;
 # use App\Controllers\Pattern\SystemMessageController;
 # use App\Controllers\Pattern\ObjetoDbController;
@@ -20,15 +23,21 @@ class ApiController extends ResourceController
     private $ModelResponse;
     private $uri;
     private $tokenCsrf;
-    private $DbControllerQlikAdmin;
-    private $DbControllerIntranetDegase;
+    private $DbIntranetDegaseController;
+    private $DbQlikAdminController;
+    private $DbHformController;
+    private $DbSgcController;
+    private $DbSgpController;
     private $message;
 
     public function __construct()
     {
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
-        $this->DbControllerQlikAdmin = new DbControllerQlikAdmin();
-        $this->DbControllerIntranetDegase = new DbControllerIntranetDegase();
+        $this->DbIntranetDegaseController = new DbIntranetDegaseController();
+        $this->DbQlikAdminController = new DbQlikAdminController();
+        $this->DbHformController = new DbHformController();
+        $this->DbSgcController = new DbSgcController();
+        $this->DbSgpController = new DbSgpController();
         // $this->tokenCsrf = new TokenCsrfController();
         // $this->message = new SystemMessageController();
         #
@@ -91,10 +100,13 @@ class ApiController extends ResourceController
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
         $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
         #
+        $requestDb[] = $this->DbIntranetDegaseController->showHDataBase();
+        $requestDb[] = $this->DbQlikAdminController->showHDataBase();
+        $requestDb[] = $this->DbHformController->showHDataBase();
+        $requestDb[] = $this->DbSgcController->showHDataBase();
+        $requestDb[] = $this->DbSgpController->showHDataBase();
+        #
         try {
-            #
-            $requestDb[] = $this->DbControllerQlikAdmin->showHDataBase();
-            $requestDb[] = $this->DbControllerIntranetDegase->showHDataBase();
             // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
@@ -132,7 +144,35 @@ class ApiController extends ResourceController
         #
         try {
             #
-            $requestDb = $this->DbControllerQlikAdmin->showHTable();
+            switch ($parameter) {
+                case 'intranetdegase':
+                    $requestDb[] = $this->DbIntranetDegaseController->showHTable();
+                    break;
+
+                case 'qlikadmin':
+                    $requestDb[] = $this->DbQlikAdminController->showHTable();
+                    break;
+
+                case 'hform':
+                    $requestDb[] = $this->DbHformController->showHTable();
+                    break;
+
+                case 'sgc':
+                    $requestDb[] = $this->DbSgcController->showHTable();
+                    break;
+
+                case 'sgp':
+                    $requestDb[] = $this->DbSgpController->showHTable();
+                    break;
+
+                default:
+                    $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->showHTable();
+                    $requestDb['qlikadmin'] = $this->DbQlikAdminController->showHTable();
+                    $requestDb['hform'] = $this->DbHformController->showHTable();
+                    $requestDb['sgc'] = $this->DbSgcController->showHTable();
+                    $requestDb['sgp'] = $this->DbSgpController->showHTable();
+                    break;
+            }
             // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
@@ -155,9 +195,9 @@ class ApiController extends ResourceController
     # route GET /www/index.php/hform/api/column/exibir/(:any)
     # Informação sobre o controller
     # retorno do controller [JSON]
-    public function ShowHColumnFromTable($parameter = NULL)
+    public function ShowHColumnFromTable($parameter1 = NULL, $parameter2 = NULL)
     {
-        if ($parameter === NULL) {
+        if ($parameter1 === NULL || $parameter2 === NULL) {
             $dbResponse = array();
             $request = service('request');
             $apiRespond['getMethod'] = $request->getMethod();
@@ -176,11 +216,39 @@ class ApiController extends ResourceController
         $page = (isset($pageGet) && !empty($pageGet)) ? ($pageGet) : (1);
         $processRequest = (array) $request->getVar();
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
-        $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
+        $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter1);
         #
         try {
+            switch ($parameter1) {
+                case 'intranetdegase':
+                    $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($parameter2);
+                    break;
+
+                case 'qlikadmin':
+                    $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($parameter2);
+                    break;
+
+                case 'hform':
+                    $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($parameter2);
+                    break;
+
+                case 'sgc':
+                    $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($parameter2);
+                    break;
+
+                case 'sgp':
+                    $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($parameter2);
+                    break;
+
+                default:
+                    $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($parameter2);
+                    $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($parameter2);
+                    $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($parameter2);
+                    $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($parameter2);
+                    $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($parameter2);
+                    break;
+            }
             #
-            $requestDb = $this->DbControllerQlikAdmin->ShowHColumnFromTable($parameter);
             // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
@@ -226,9 +294,9 @@ class ApiController extends ResourceController
         $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
         $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
         #
+        $requestDb = $this->DbQlikAdminController->ShowHColumnTipoFromTable($parameter);
         try {
             #
-            $requestDb = $this->DbControllerQlikAdmin->ShowHColumnTipoFromTable($parameter);
             // myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);

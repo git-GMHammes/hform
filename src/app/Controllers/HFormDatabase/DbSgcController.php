@@ -3,7 +3,7 @@
 namespace App\Controllers\HFormDatabase;
 
 use App\Controllers\BaseController;
-use App\Models\BaseMainIntranetDegaseModel;
+use App\Models\BaseMainSgcModel;
 use Exception;
 
 class DbSgcController extends BaseController
@@ -17,7 +17,7 @@ class DbSgcController extends BaseController
 
     public function __construct()
     {
-        $this->ModelHForm = new BaseMainIntranetDegaseModel();
+        $this->ModelHForm = new BaseMainSgcModel();
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
     }
 

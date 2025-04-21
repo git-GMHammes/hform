@@ -12,16 +12,16 @@ $routes->group('hform', function ($routes) {
     $routes->group('api', function ($routes) {
         # www/index.php/hform/api/database(:any)
         $routes->group('database', function ($routes) {
-            # www/index.php/hform/api/database/exibir/(:any)
+            # www//(:any)
             $routes->get('exibir', 'HFormDatabase\ApiController::showHDatabase');
             $routes->get('exibir/(:segment)', 'HFormDatabase\ApiController::showHDatabase/$1');
             $routes->get('exibir/(:any)', 'HFormDatabase\ApiController::showHDatabase/$1');
             $routes->post('exibir', 'HFormDatabase\ApiController::showHDatabase');
             $routes->post('exibir/(:any)', 'HFormDatabase\ApiController::showHDatabase/$1');
         });
-        # www/index.php/hform/api/table(:any)
+        # www/index.php/hform/api/database/exibir(:any)
         $routes->group('table', function ($routes) {
-            # www/index.php/hform/table/api/exibir/(:any)
+            # www/index.php/hform/api/table/exibir/(:any)
             $routes->get('exibir', 'HFormDatabase\ApiController::showHTable');
             $routes->get('exibir/(:segment)', 'HFormDatabase\ApiController::showHTable/$1');
             $routes->get('exibir/(:any)', 'HFormDatabase\ApiController::showHTable/$1');

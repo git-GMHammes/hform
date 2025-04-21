@@ -152,6 +152,38 @@ class Database extends Config
      *
      * @var array<string, mixed>
      */
+    public array $dev_intranetdegase_hform = [
+        'DSN'          => '',
+        'hostname'     => BE314B83BF05F6F1E74C8DD99F2880FC,
+        'username'     => CF6653F62C741E540C2B77E51D3C4887,
+        'password'     => B024842ACCA9CF6B4910BB859ED91D58,
+        'database'     => B92397F8AD694DC3A41AEF2FD91F05A6,
+        'DBDriver'     => AB74804868EF19DE67DF19530AB0E818,
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => B8BA0DE78450B7D5367802ECF58DA681,
+        'numberNative' => false,
+        'foundRows'    => false,
+        'dateFormat'   => [
+            'date'     => 'Y-m-d',
+            'datetime' => 'Y-m-d H:i:s',
+            'time'     => 'H:i:s',
+        ],
+    ];
+
+    /**
+     * The default database connection.
+     *
+     * @var array<string, mixed>
+     */
     public array $dev_qlikadmin_hform = [
         'DSN'          => '',
         'hostname'     => DDEBF4FEB3047FF69D2924758D83EC53,
@@ -216,7 +248,7 @@ class Database extends Config
      *
      * @var array<string, mixed>
      */
-    public array $dev_sgP_hform = [
+    public array $dev_sgp_hform = [
         'DSN'          => '',
         'hostname'     => BFE13EDE23F40A6B4E2B68FB9B5E7227,
         'username'     => DBD4F51CE226381032D54C90A0D0ACA4,
@@ -233,7 +265,7 @@ class Database extends Config
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => BFE13EDE23F40A6B4E2B68FB9B5E7227,
+        'port'         => FFF256B8D43212B581D7D7B7ECBC0B06,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [

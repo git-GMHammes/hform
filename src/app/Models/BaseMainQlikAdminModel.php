@@ -44,7 +44,7 @@ class BaseMainQlikAdminModel extends Model
         // myPrint('$results :: ', $results);
         $clientInfo = $query->connID->client_info;
         $hostInfo = $query->connID->host_info;
-        $database = $results[0]->Database;
+        $database = $results[3]->Database;
         #
         $dbReturn = array(
             'clientInfo' => $clientInfo,
@@ -62,8 +62,12 @@ class BaseMainQlikAdminModel extends Model
         $this->primaryKey = (string) 'id';
         $this->table = 'table';
         $query = $this->query("SHOW TABLES");
-        $results = $query->getResult();
-        // myPrint('$results :: ', $results);
+        $result_object = $query->getResult();
+        // myPrint('$results :: ', $result_object);
+        foreach ($result_object as $key => $value) {
+            // myPrint($value->Tables_in_sgp, '', true);
+            $results[] = $value->Tables_in_qlikadmin;
+        }
         return $results;
     }
 
@@ -90,6 +94,8 @@ class BaseMainQlikAdminModel extends Model
     # $dbTable, $primaryKey;
     public function getHColumnTipoFromTable($dbTable = null)
     {
+        // myPrint('$dbTable :: ', $dbTable);
+        $results = [];
         $this->primaryKey = (string) 'id';
         $this->table = $dbTable;
         $query = $this->query("SELECT " .
@@ -103,7 +109,11 @@ class BaseMainQlikAdminModel extends Model
             "FROM INFORMATION_SCHEMA.COLUMNS " .
             "WHERE TABLE_NAME = '" . $dbTable .
             "';");
-        $results = $query->getResult();
+        $result_object = $query->getResult();
+        foreach ($result_object as $key => $value) {
+            // myPrint($value->Tables_in_sgp, '', true);
+            $results[] = $value->COLUMN_NAME;
+        }
         // myPrint('$results :: ', $results);
         return $results;
     }

@@ -6,10 +6,10 @@ use CodeIgniter\Database\Query;
 use CodeIgniter\Model;
 use App\Controllers\Pattern\SystemMessageController;
 
-class BaseMainSgpModel extends Model
+class BaseMainHformModel extends Model
 {
 
-    protected $DBGroup = DATABASE_CONNECTION_SGP;
+    protected $DBGroup = DATABASE_CONNECTION_HFORM;
 
     protected $table = '';
     protected $primaryKey = '';
@@ -44,7 +44,7 @@ class BaseMainSgpModel extends Model
         // myPrint('$results :: ', $results);
         $clientInfo = $query->connID->client_info;
         $hostInfo = $query->connID->host_info;
-        $database = $results[3]->Database;
+        $database = $results[0]->Database;
         #
         $dbReturn = array(
             'clientInfo' => $clientInfo,
@@ -63,11 +63,11 @@ class BaseMainSgpModel extends Model
         $this->table = 'table';
         $query = $this->query("SHOW TABLES");
         $result_object = $query->getResult();
+        // myPrint('$results :: ', $result_object);
         foreach ($result_object as $key => $value) {
             // myPrint($value->Tables_in_sgp, '', true);
-            $results[] = $value->Tables_in_sgp;
+            $results[] = $value->Tables_in_hform;
         }
-        // myPrint('$results :: ', $results);
         return $results;
     }
 
@@ -85,6 +85,7 @@ class BaseMainSgpModel extends Model
             "WHERE TABLE_NAME = '" . $dbTable .
             "';");
         $result_object = $query->getResult();
+        // myPrint('$result_object :: ', $result_object);
         foreach ($result_object as $key => $value) {
             // myPrint($value->Tables_in_sgp, '', true);
             $results[] = $value->COLUMN_NAME;

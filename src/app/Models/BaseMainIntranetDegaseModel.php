@@ -9,7 +9,7 @@ use App\Controllers\Pattern\SystemMessageController;
 class BaseMainIntranetDegaseModel extends Model
 {
 
-    protected $DBGroup = DATABASE_CONNECTION_INTRANET_DEGASE;
+    protected $DBGroup = DATABASE_CONNECTION_INTRANETDEDGASE;
 
     protected $table = '';
     protected $primaryKey = '';
@@ -44,7 +44,7 @@ class BaseMainIntranetDegaseModel extends Model
         // myPrint('$results :: ', $results);
         $clientInfo = $query->connID->client_info;
         $hostInfo = $query->connID->host_info;
-        $database = $results[0]->Database;
+        $database = $results[1]->Database;
         #
         $dbReturn = array(
             'clientInfo' => $clientInfo,
@@ -62,8 +62,12 @@ class BaseMainIntranetDegaseModel extends Model
         $this->primaryKey = (string) 'id';
         $this->table = 'table';
         $query = $this->query("SHOW TABLES");
-        $results = $query->getResult();
-        // myPrint('$results :: ', $results);
+        $result_object = $query->getResult();
+        // myPrint('$result_object :: ', $result_object);
+        foreach ($result_object as $key => $value) {
+            // myPrint($value->Tables_in_sgp, '', true);
+            $results[] = $value->Tables_in_intranetdegase;
+        }
         return $results;
     }
 
@@ -73,13 +77,19 @@ class BaseMainIntranetDegaseModel extends Model
     # $dbTable, $primaryKey;
     public function getHColumnFromTable($dbTable = null)
     {
+        // myPrint('$dbTable :: ', $dbTable);
+        $results = [];
         $this->primaryKey = (string) 'id';
         $this->table = $dbTable;
         $query = $this->query("SELECT COLUMN_NAME " .
             "FROM INFORMATION_SCHEMA.COLUMNS " .
             "WHERE TABLE_NAME = '" . $dbTable .
             "';");
-        $results = $query->getResult();
+        $result_object = $query->getResult();
+        foreach ($result_object as $key => $value) {
+            // myPrint($value->Tables_in_sgp, '', true);
+            $results[] = $value->COLUMN_NAME;
+        }
         // myPrint('$results :: ', $results);
         return $results;
     }
