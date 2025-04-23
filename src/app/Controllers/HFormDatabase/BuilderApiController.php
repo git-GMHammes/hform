@@ -6,6 +6,7 @@ use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 # 
 use App\Controllers\HFormDatabase\DbIntranetDegaseController;
+use App\Controllers\HFormDatabase\DbHformBuilderController;
 use App\Controllers\HFormDatabase\DbQlikAdminController;
 use App\Controllers\HFormDatabase\DbHformController;
 use App\Controllers\HFormDatabase\DbSgcController;
@@ -13,7 +14,7 @@ use App\Controllers\HFormDatabase\DbSgpController;
 use App\Controllers\HFormDatabase\DbFormBuilderStyleRowController;
 use App\Controllers\HFormDatabase\DbFormComplementLabelController;
 use App\Controllers\HFormDatabase\DbFormComplementTypeController;
-use App\Controllers\HFormDatabase\DbFormBuilderController;
+use App\Controllers\HFormDatabase\DbFormBuilderFieldController;
 // use App\Controllers\Pattern\TokenCsrfController;
 // use App\Controllers\Pattern\SystemMessageController;
 // use App\Controllers\Pattern\ObjetoDbController;
@@ -25,17 +26,18 @@ class BuilderApiController extends ResourceController
 {
     use ResponseTrait;
     private $ModelResponse;
-    private $uri;
     private $tokenCsrf;
+    private $uri;
     private $DbIntranetDegaseController;
     private $DbQlikAdminController;
     private $DbHformController;
     private $DbSgcController;
     private $DbSgpController;
-    private $DbFormBuilderController;
     private $DbFormBuilderStyleRowController;
     private $DbFormComplementLabelController;
     private $DbFormComplementTypeController;
+    private $DbFormBuilderFieldController;
+    private $DbFormBuilderController;
     private $message;
 
     public function __construct()
@@ -43,14 +45,14 @@ class BuilderApiController extends ResourceController
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
         $this->DbIntranetDegaseController = new DbIntranetDegaseController();
         $this->DbQlikAdminController = new DbQlikAdminController();
-        $this->DbHformController = new DbHformController();
         $this->DbSgcController = new DbSgcController();
         $this->DbSgpController = new DbSgpController();
         $this->DbFormBuilderStyleRowController = new DbFormBuilderStyleRowController();
         $this->DbFormComplementLabelController = new DbFormComplementLabelController();
         $this->DbFormComplementTypeController = new DbFormComplementTypeController();
+        $this->DbFormBuilderFieldController = new DbFormBuilderFieldController();
         $this->DbFormBuilderController = new DbFormBuilderController();
-
+        #
         // $this->DbController = new ObjetoDbController();
         // $this->tokenCsrf = new TokenCsrfController();
         // $this->message = new SystemMessageController();
@@ -139,13 +141,31 @@ class BuilderApiController extends ResourceController
         return $dbSave;
     }
 
-    private function getLabel($parameter){
-        $this->DbFormComplementLabelController->dbFter($parameter);
-        return null;
+    private function getLabel($parameter)
+    {
+        $filterColumn = array(
+            'column' => $parameter
+        );
+        $dbFilter = $this->DbFormComplementLabelController->dbFilter($filterColumn, 1, 1);
+        if (isset($dbFilter['dbResponse'][0]['label'])) {
+            // myPrint('$dbFilter :: ', $dbFilter['dbResponse'][0]['label'], true);
+            return $dbFilter['dbResponse'][0]['label'];
+        }
+        return '';
     }
-    
-    private function getType($parameter){
-        return null;
+
+    private function getType($parameter)
+    {
+        // myPrint($parameter, '', true);
+        $filterColumn = array(
+            'column' => $parameter
+        );
+        $dbFilter = $this->DbFormComplementTypeController->dbFilter($filterColumn, 1, 1);
+        if (isset($dbFilter['dbResponse'][0]['type'])) {
+            // myPrint('$dbFilter :: ', $dbFilter['dbResponse'][0]['type'], true);
+            return $dbFilter['dbResponse'][0]['type'];
+        }
+        return '';
     }
 
     # route POST /www/index.php/projeto/objeto/api/cadastrar/(:any)
@@ -181,41 +201,75 @@ class BuilderApiController extends ResourceController
             $apiRespond['message'] = '403 Forbidden - Directory access is forbidden.';
             return $this->response->setStatusCode(403)->setJSON($apiRespond);
         }
+        switch ($parameter1) {
+            case 'intranetdegase':
+                $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($table);
+                break;
+
+            case 'qlikadmin':
+                $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($table);
+                break;
+
+            case 'hform':
+                $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($table);
+                break;
+
+            case 'sgc':
+                $this->DbFormBuilderController->dbDelete('database', $dataBase);
+                $this->DbFormBuilderFieldController->dbDelete('table', $table);
+                #
+                // exit('FIM');
+                $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($table);
+                $variable = $requestDb['sgc'];
+                if (count($variable) > 0) {
+                    $dbCreate = array(
+                        'database' => $dataBase,
+                    );
+                    $this->DbFormBuilderController->dbCreate($dbCreate);
+                    $ind = 1;
+                    foreach ($variable as $key => $value) {
+                        $dbCreate = array(
+                            'database' => $dataBase,
+                            'table' => $table,
+                            'column' => $value,
+                            'form_on' => 'Y',
+                            'order' => $ind,
+                        );
+                        $this->DbFormBuilderFieldController->dbCreate($dbCreate);
+                        $ind++;
+                    }
+                    $ind = 0;
+                    foreach ($variable as $key => $value) {
+                        $dbUpdate = array(
+                            'label' => $this->getLabel($value),
+                            'sub_type' => $this->getType($value),
+                        );
+                        myPrint('$dbUpdate :: ', $dbUpdate, true);
+                        $this->DbFormBuilderFieldController->dbUpdate(['column' => $value], $dbUpdate);
+                        $ind++;
+                    }
+                    exit('FIM');
+                }
+                break;
+
+            case 'sgp':
+                $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($table);
+                break;
+
+            default:
+                $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($table);
+                $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($table);
+                $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($table);
+                $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($table);
+                $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($table);
+                break;
+        }
+        #
+        foreach ($requestDb as $key => $value) {
+            # code...
+        }
+        myPrint('$requestDb :: ', $requestDb);
         try {
-            switch ($parameter1) {
-                case 'intranetdegase':
-                    $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($parameter2);
-                    break;
-
-                case 'qlikadmin':
-                    $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($parameter2);
-                    break;
-
-                case 'hform':
-                    $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($parameter2);
-                    break;
-
-                case 'sgc':
-                    $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($parameter2);
-                    break;
-
-                case 'sgp':
-                    $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($parameter2);
-                    break;
-
-                default:
-                    $requestDb['intranetdegase'] = $this->DbIntranetDegaseController->ShowHColumnFromTable($parameter2);
-                    $requestDb['qlikadmin'] = $this->DbQlikAdminController->ShowHColumnFromTable($parameter2);
-                    $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($parameter2);
-                    $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($parameter2);
-                    $requestDb['sgp'] = $this->DbSgpController->ShowHColumnFromTable($parameter2);
-                    break;
-            }
-            #
-            foreach ($requestDb as $key => $value) {
-                # code...
-            }
-            myPrint('$requestDb :: ', $requestDb);
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
             $response = $this->response->setStatusCode(201)->setJSON($apiRespond);

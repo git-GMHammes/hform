@@ -3,3 +3,4 @@ mysql/*
 src/public/security/*
 src/writable/debugbar/*
 src/writable/logs/*
+src/writable/session/*

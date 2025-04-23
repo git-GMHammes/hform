@@ -7,13 +7,13 @@ use App\Controllers\BaseController;
 use App\Controllers\Pattern\SystemBaseController;
 use App\Controllers\Pattern\SystemMessageController;
 // use App\Models\VCadastroAdolescentesModels;
-use App\Models\FormComplementLabelModel;
+use App\Models\FormBuilderFieldModel;
 use Exception;
 
-class DbFormComplementLabelController extends BaseController
+class DbFormBuilderFieldController extends BaseController
 {
     // private $ModelUpload;
-    private $ModelFormComplementLabel;
+    private $ModelFormBuilderField;
     private $pagination;
     private $message;
     private $uri;
@@ -21,7 +21,7 @@ class DbFormComplementLabelController extends BaseController
     public function __construct()
     {
         // $this->ModelUpload = new UploadModel();
-        $this->ModelFormComplementLabel = new FormComplementLabelModel();
+        $this->ModelFormBuilderField = new FormBuilderFieldModel();
         $this->pagination = new SystemBaseController();
         $this->message = new SystemMessageController();
         $this->uri = new \CodeIgniter\HTTP\URI(current_url());
@@ -44,22 +44,14 @@ class DbFormComplementLabelController extends BaseController
     {
         //myPrint($processRequestFields, 'src\app\Controllers\SystemUploadDbController.php', true);
         $dbCreate = array();
-        $autoColumn = $this->ModelFormComplementLabel->getColumnsFromTable();
+        $autoColumn = $this->ModelFormBuilderField->getColumnsFromTable();
         // myPrint($autoColumn, 'src\app\Controllers\SystemUploadDbController.php', true);
         if (isset($autoColumn['COLUMN'])) {
             foreach ($autoColumn['COLUMN'] as $key_autoColumn => $value_autoColumn) {
                 (isset($processRequestFields[$value_autoColumn])) ? ($dbCreate[$value_autoColumn] = $processRequestFields[$value_autoColumn]) : (NULL);
             }
         }
-
-        (isset($processRequestFields['Registro'])) ? ($dbCreate['NumRegistro'] = $processRequestFields['Registro']) : (NULL);
-        (isset($processRequestFields['PerfilId'])) ? ($dbCreate['perfil_id'] = $processRequestFields['PerfilId']) : (NULL);
-        (isset($processRequestFields['GeneroIdentidadeId'])) ? ($dbCreate['genero_identidade_id'] = $processRequestFields['GeneroIdentidadeId']) : (NULL);
-        (isset($processRequestFields['AcessoCadastroID'])) ? ($dbCreate['acesso_id'] = $processRequestFields['AcessoCadastroID']) : (NULL);
-        (isset($processRequestFields['ResponsavelID'])) ? ($dbCreate['cadastro_id'] = $processRequestFields['ResponsavelID']) : (NULL);
-        (isset($processRequestFields['MunicipioId'])) ? ($dbCreate['municipio_id'] = $processRequestFields['MunicipioId']) : (NULL);
-        (isset($processRequestFields['SexoId'])) ? ($dbCreate['sexo_biologico_id'] = $processRequestFields['SexoId']) : (NULL);
-        (isset($processRequestFields['UnidadeId'])) ? ($dbCreate['unidade_id'] = $processRequestFields['UnidadeId']) : (NULL);
+        (isset($processRequestFields['filterDb'])) ? ($dbCreate['columnDb'] = $processRequestFields['filterDb']) : (NULL);
         // myPrint($dbCreate, 'src\app\Controllers\ExempleDbController.php');
         return ($dbCreate);
     }
@@ -70,10 +62,9 @@ class DbFormComplementLabelController extends BaseController
     # $this->DbController->dbFields($fileds = array();
     public function dbFieldsFilter($processRequestFields = array())
     {
-        // myPrint($processRequestFields, 'src\app\Controllers\HFormDatabase\DbFormComplementLabelController.php', true);
+        // myPrint($processRequestFields, 'src\app\Controllers\SystemUploadDbController.php', true);
         $dbCreate = array();
-        $autoColumn = $this->ModelFormComplementLabel->getColumnsFromTable();
-        // myPrint($autoColumn, 'src\app\Controllers\HFormDatabase\DbFormComplementLabelController.php', true);
+        $autoColumn = $this->ModelFormBuilderField->getColumnsFromTable();
         if (isset($autoColumn['COLUMN'])) {
             foreach ($autoColumn['COLUMN'] as $key_autoColumn => $value_autoColumn) {
                 (isset($processRequestFields[$value_autoColumn])) ? ($dbCreate[$value_autoColumn] = $processRequestFields[$value_autoColumn]) : (NULL);
@@ -82,7 +73,7 @@ class DbFormComplementLabelController extends BaseController
         if ($dbCreate == array()) {
             (isset($processRequestFields['filtroSelect'])) ? ($dbCreate['Nome'] = $processRequestFields['filtroSelect']) : (NULL);
         }
-        // myPrint($dbCreate, 'src\app\Controllers\HFormDatabase\DbFormComplementLabelController.php');
+        // myPrint($dbCreate, 'src\app\Controllers\ExempleDbController.php');
         return ($dbCreate);
     }
 
@@ -92,11 +83,11 @@ class DbFormComplementLabelController extends BaseController
     public function dbCreate($parameter = NULL)
     {
         try {
-            $this->ModelFormComplementLabel->dbCreate($this->dbFields($parameter));
+            $this->ModelFormBuilderField->dbCreate($this->dbFields($parameter));
             // myPrint($parameter, 'src\app\Controllers\AdolescenteDbController.php');
-            $affectedRows = $this->ModelFormComplementLabel->affectedRows();
+            $affectedRows = $this->ModelFormBuilderField->affectedRows();
             if ($affectedRows > 0) {
-                $dbCreate['insertID'] = $this->ModelFormComplementLabel->insertID();
+                $dbCreate['insertID'] = $this->ModelFormBuilderField->insertID();
                 $dbCreate['affectedRows'] = $affectedRows;
                 $dbCreate['dbCreate'] = $parameter;
             } else {
@@ -127,7 +118,7 @@ class DbFormComplementLabelController extends BaseController
         try {
             if ($parameter !== NULL) {
                 $dbResponse = $this
-                    ->ModelFormComplementLabel
+                    ->ModelFormBuilderField
                     ->where('id', $parameter)
                     ->where('deleted_at', NULL)
                     ->orderBy('id', 'DESC')
@@ -136,7 +127,7 @@ class DbFormComplementLabelController extends BaseController
                 //
             } else {
                 $dbResponse = $this
-                    ->ModelFormComplementLabel
+                    ->ModelFormBuilderField
                     ->where('deleted_at', NULL)
                     ->orderBy('id', 'DESC')
                     ->dBread()
@@ -171,21 +162,14 @@ class DbFormComplementLabelController extends BaseController
     public function dbFilter($parameter = NULL, $page = 1, $limit = 10)
     {
         $parameter = $this->dbFieldsFilter($parameter);
-        // myPrint($parameter, '', true);
+        //
         try {
             $query = $this
-                ->ModelFormComplementLabel
+                ->ModelFormBuilderField
                 ->where('deleted_at', NULL);
-            if ($limit !== 1) {
-                foreach ($parameter as $key => $value) {
-                    $query = $query->like($key, $value);
-                    // myPrint($key, $value, true);
-                }
-            } else {
-                foreach ($parameter as $key => $value) {
-                    $query = $query->where($key, $value);
-                    // myPrint($key, $value, true);
-                }
+            foreach ($parameter as $key => $value) {
+                $query = $query->like($key, $value);
+                // myPrint($key, $value, true);
             }
 
             $dbResponse = $query
@@ -227,15 +211,15 @@ class DbFormComplementLabelController extends BaseController
                 && empty($parameter['deleted_at'])
                 && count($parameter) == 1
             ) {
-                $this->ModelFormComplementLabel->dbUpdate($key, $parameter);
+                $this->ModelFormBuilderField->dbUpdate($key, $parameter);
             } else {
-                $this->ModelFormComplementLabel->dbUpdate($key, $this->dbFields($parameter));
+                $this->ModelFormBuilderField->dbUpdate($key, $this->dbFields($parameter));
                 $ver = $this->dbFields($parameter);
                 // myPrint($key, 'src\app\Controllers\AdolescenteDbController.php', true);
                 // myPrint($ver, 'src\app\Controllers\AdolescenteDbController.php', true);
             }
             #
-            $affectedRows = $this->ModelFormComplementLabel->affectedRows();
+            $affectedRows = $this->ModelFormBuilderField->affectedRows();
             #
             if ($affectedRows > 0) {
                 $dbUpdate['updateID'] = $key;
@@ -263,16 +247,16 @@ class DbFormComplementLabelController extends BaseController
     # route GET /www/sigla/rota
     # Informação sobre o controller
     # retorno do controller [JSON]
-    public function dbDelete($parameter = NULL)
+    public function dbDelete($parameter1 = NULL, $parameter2 = NULL)
     {
         try {
-            $this->ModelFormComplementLabel->dbDelete('id', $parameter);
-            $affectedRows = $this->ModelFormComplementLabel->affectedRows();
+            $this->ModelFormBuilderField->dbDelete($parameter1, $parameter2);
+            $affectedRows = $this->ModelFormBuilderField->affectedRows();
             if ($affectedRows > 0) {
-                $dbUpdate['updateID'] = $parameter;
+                $dbUpdate['updateID'] = $parameter2;
                 $dbUpdate['affectedRows'] = $affectedRows;
             } else {
-                $dbUpdate['updateID'] = $parameter;
+                $dbUpdate['updateID'] = $parameter2;
                 $dbUpdate['affectedRows'] = $affectedRows;
             }
             $response = $dbUpdate;
@@ -281,7 +265,7 @@ class DbFormComplementLabelController extends BaseController
                 myPrint($e->getMessage(), 'src\app\Controllers\ExempleDbController.php');
             }
             $message = $e->getMessage();
-            $this->message->message([$message], 'danger', $parameter, 5);
+            $this->message->message([$message], 'danger', $parameter2, 5);
             $response = array();
         }
         return $response;
@@ -298,7 +282,7 @@ class DbFormComplementLabelController extends BaseController
             // exit('src\app\Controllers\AdolescenteDbController.php');
             if ($parameter !== NULL) {
                 $dbResponse = $this
-                    ->ModelFormComplementLabel
+                    ->ModelFormBuilderField
                     ->where('id', $parameter)
                     ->where('deleted_at !=', NULL)
                     ->orderBy('id', 'DESC')
@@ -307,7 +291,7 @@ class DbFormComplementLabelController extends BaseController
                 //
             } else {
                 $dbResponse = $this
-                    ->ModelFormComplementLabel
+                    ->ModelFormBuilderField
                     ->where('deleted_at !=', NULL)
                     ->orderBy('id', 'DESC')
                     ->dBread()

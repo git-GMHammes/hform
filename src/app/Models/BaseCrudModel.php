@@ -9,7 +9,7 @@ use App\Controllers\Pattern\SystemMessageController;
 class BaseCrudModel extends Model
 {
 
-    protected $DBGroup = DATABASE_CONNECTION;
+    protected $DBGroup = DATABASE_CONNECTION_HFORM;
 
     protected $table = '';
     protected $primaryKey = '';

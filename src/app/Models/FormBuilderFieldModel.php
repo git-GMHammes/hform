@@ -6,23 +6,23 @@ use CodeIgniter\Database\Query;
 use CodeIgniter\Model;
 use App\Controllers\SystemMessageController;
 
-class FormBuilderModel extends Model
+class FormBuilderFieldModel extends Model
 {
 
     protected $DBGroup = DATABASE_CONNECTION_HFORM;
 
-    protected $table = 'form_builder';
+    protected $table = 'form_builder_field';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $allowedFields = [];
     protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation     = false;
+    protected $skipValidation = false;
     protected $useTimestamps = false;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
     protected $dbCreate;
     protected $dbRead;
     protected $dbUpdate;
@@ -48,14 +48,12 @@ class FormBuilderModel extends Model
         $this->dbRead = $ModelBaseCrud->dbRead($this->table, $this->primaryKey, $keyVariable, $keyValue);
         return $this;
     }
-
     public function dbUpdate($key, $dbUpdate)
     {
         $ModelBaseCrud = new BaseCrudModel;
         $this->dbUpdate = $ModelBaseCrud->dbUpdate($this->table, $this->primaryKey, $key, $dbUpdate);
         return $this;
     }
-
     public function dBdelete($parameter, $key)
     {
         $ModelBaseCrud = new BaseCrudModel;
