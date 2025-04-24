@@ -55,11 +55,11 @@ class FormBuilderStyleRowModel extends Model
         $this->dbUpdate = $ModelBaseCrud->dbUpdate($this->table, $this->primaryKey, $key, $dbUpdate);
         return $this;
     }
-
-    public function dBdelete($key)
+    
+    public function dBdelete($parameter, $key)
     {
         $ModelBaseCrud = new BaseCrudModel;
-        $this->dBdelete = $ModelBaseCrud->dBdelete($this->table, $this->primaryKey, $key);
+        $this->dBdelete = $ModelBaseCrud->dBdelete($this->table, $this->primaryKey, $parameter, $key);
         return $this;
     }
 }

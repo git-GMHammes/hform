@@ -132,7 +132,7 @@ class BaseCrudModel extends Model
         // myPrint('$dbTable:: ', $dbTable, true);
         // myPrint('$primaryKey:: ', $primaryKey, true);
         // myPrint('$key:: ', $key, true);
-        // myPrint('$dbUpdate:: ', $dbUpdate, true);
+        // myPrint('$dbUpdate:: ', $dbUpdate);
         $this->table = $dbTable;
         $this->primaryKey = $primaryKey;
         $this->message = new SystemMessageController();

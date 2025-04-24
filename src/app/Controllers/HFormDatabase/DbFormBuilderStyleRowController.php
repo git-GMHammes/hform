@@ -255,16 +255,16 @@ class DbFormBuilderStyleRowController extends BaseController
     # route GET /www/sigla/rota
     # Informação sobre o controller
     # retorno do controller [JSON]
-    public function dbDelete($parameter = NULL)
+    public function dbDelete($parameter1 = NULL, $parameter2 = NULL)
     {
         try {
-            $this->ModelFormBuilderStyleRow->dbDelete('id', $parameter);
+            $this->ModelFormBuilderStyleRow->dbDelete($parameter1, $parameter2);
             $affectedRows = $this->ModelFormBuilderStyleRow->affectedRows();
             if ($affectedRows > 0) {
-                $dbUpdate['updateID'] = $parameter;
+                $dbUpdate['updateID'] = $parameter2;
                 $dbUpdate['affectedRows'] = $affectedRows;
             } else {
-                $dbUpdate['updateID'] = $parameter;
+                $dbUpdate['updateID'] = $parameter2;
                 $dbUpdate['affectedRows'] = $affectedRows;
             }
             $response = $dbUpdate;
@@ -273,7 +273,7 @@ class DbFormBuilderStyleRowController extends BaseController
                 myPrint($e->getMessage(), 'src\app\Controllers\ExempleDbController.php');
             }
             $message = $e->getMessage();
-            $this->message->message([$message], 'danger', $parameter, 5);
+            $this->message->message([$message], 'danger', $parameter2, 5);
             $response = array();
         }
         return $response;

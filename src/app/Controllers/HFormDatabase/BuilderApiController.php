@@ -52,6 +52,7 @@ class BuilderApiController extends ResourceController
         $this->DbFormComplementTypeController = new DbFormComplementTypeController();
         $this->DbFormBuilderFieldController = new DbFormBuilderFieldController();
         $this->DbFormBuilderController = new DbFormBuilderController();
+        $this->DbHformController = new DbHformController();
         #
         // $this->DbController = new ObjetoDbController();
         // $this->tokenCsrf = new TokenCsrfController();
@@ -73,6 +74,7 @@ class BuilderApiController extends ResourceController
         return $this->response->setStatusCode(403)->setJSON($apiRespond);
     }
 
+    # Prepara o retorno da API
     private function setApiRespond(string $status = 'success', string $getMethod = 'GET', array $requestDb = array(), $message = 'API loading data (dados para carregamento da API)')
     {
         # $message = 'API loading data (dados para carregamento da API)',
@@ -99,6 +101,7 @@ class BuilderApiController extends ResourceController
         return $apiRespond;
     }
 
+    # Salva o request no banco de dados
     private function saveRequest(bool $choice_update = false, string $token_csrf = 'erro', array $processRequest = array())
     {
         $processRequestSuccess = false;
@@ -141,6 +144,7 @@ class BuilderApiController extends ResourceController
         return $dbSave;
     }
 
+    # Pega o label do campo
     private function getLabel($parameter)
     {
         $filterColumn = array(
@@ -154,6 +158,7 @@ class BuilderApiController extends ResourceController
         return '';
     }
 
+    # Pega o tipo do campo
     private function getType($parameter)
     {
         // myPrint($parameter, '', true);
@@ -161,17 +166,106 @@ class BuilderApiController extends ResourceController
             'column' => $parameter
         );
         $dbFilter = $this->DbFormComplementTypeController->dbFilter($filterColumn, 1, 1);
-        if (isset($dbFilter['dbResponse'][0]['type'])) {
-            // myPrint('$dbFilter :: ', $dbFilter['dbResponse'][0]['type'], true);
-            return $dbFilter['dbResponse'][0]['type'];
-        }
-        return '';
+        $result['type'] = isset($dbFilter['dbResponse'][0]['type']) ? $dbFilter['dbResponse'][0]['type'] : '';
+        $result['sub_type'] = isset($dbFilter['dbResponse'][0]['sub_type']) ? $dbFilter['dbResponse'][0]['sub_type'] : '';
+        return $result;
     }
 
-    # route POST /www/index.php/projeto/objeto/api/cadastrar/(:any)
-    # route GET /www/index.php/projeto/objeto/api/cadastrar/(:any)
-    # route POST /www/index.php/projeto/objeto/api/atualizar/(:any)
-    # route GET /www/index.php/projeto/objeto/api/atualizar/(:any)
+    # Limpa a tabela e suas configurações
+    private function clearTable($dataBase, $table)
+    {
+        $this->DbFormBuilderStyleRowController->dbDelete('table', $table);
+        $this->DbFormBuilderController->dbDelete('database', $dataBase);
+        $this->DbFormBuilderFieldController->dbDelete('table', $table);
+    }
+
+    # Adiciona banco de dados
+    private function addDatabase($dataBase)
+    {
+        $dbCreate = array(
+            'database' => $dataBase,
+        );
+        #
+        $returnDbCreate = $this->DbFormBuilderController->dbCreate($dbCreate);
+        return $returnDbCreate;
+    }
+
+    # Adiciona campos no banco de dados
+    private function addFields($variable, $dataBase, $table)
+    {
+        $ind1 = 1;
+        foreach ($variable as $key => $value) {
+            $dbCreate = array(
+                'database' => $dataBase,
+                'table' => $table,
+                'column' => $value,
+                'col_sm' => 'col-12 col-sm-4',
+                'form_on' => 'Y',
+                'order' => $ind1,
+                'tabIndex' => $ind1,
+                'required' => 'N',
+            );
+            $this->DbFormBuilderFieldController->dbCreate($dbCreate);
+            $ind1++;
+        }
+    }
+
+    # Atualiza regist# Atualiza registros no banco de dadosros no banco de dados
+    private function updateRows($returnId, $value, $idDataBase)
+    {
+        $result = $this->getType($value);
+        $type = isset($result['type']) ? ($result['type']) : ('');
+        $subType = isset($result['sub_type']) ? ($result['sub_type']) : ('');
+        $dbUpdate = array(
+            'form_builder_id' => $idDataBase,
+            'form_builder_style_row_id' => isset($returnId) ? ($returnId) : (null),
+            'label' => $this->getLabel($value),
+            'type' => $type,
+            'sub_type' => $subType,
+            'placeholder' => $this->getLabel($value),
+        );
+        $resultDbFormBuilderFieldController = $this->DbFormBuilderFieldController->dbUpdate(['column' => $value], $dbUpdate);
+        return $resultDbFormBuilderFieldController;
+    }
+
+    # Verifica se o número é divisível por 4
+    private function ehDivisivelPor3($numero)
+    {
+        return ($numero % 3 == 1);
+        // if ($numero > 3) {
+        // }
+    }
+
+    # Adicionar rows no banco de dados
+    private function addRow($ind2, $dataBase, $table)
+    {
+        $dbCreate = array(
+            'database' => $dataBase,
+            'table' => $table,
+            'order' => $ind2,
+            'row' => 'row',
+        );
+        $returnDbCreate = $this->DbFormBuilderStyleRowController->dbCreate($dbCreate);
+        $result['limitOrder'] = isset($returnDbCreate['dbCreate']['order']) ? ($returnDbCreate['dbCreate']['order']) : (null);
+        $result['returnId'] = isset($returnDbCreate['insertID']) ? $returnDbCreate['insertID'] : (null);
+        return $result;
+    }
+
+    # Atualiza os campos do banco de dados
+    private function updateFields($ind2, $dataBase, $table)
+    {
+        if (
+            $this->ehDivisivelPor3($ind2) ||
+            $ind2 == 1
+        ) {
+            # Adicionar rows no banco de dados
+            $result = $this->addRow($ind2, $dataBase, $table);
+            return $result;
+        }
+    }
+
+    # route GET /www/index.php/projeto/objeto/api/salvar/(:any)
+    # route POST /www/index.php/projeto/objeto/api/salvar/(:any)
     # Informação sobre o controller
     # retorno do controller [JSON]
     public function create_update($parameter1 = NULL, $parameter2 = NULL)
@@ -189,7 +283,6 @@ class BuilderApiController extends ResourceController
         // myPrint($dataBase, $table);
         #
         if (
-
             $dataBase === NULL ||
             $table === NULL
         ) {
@@ -211,44 +304,59 @@ class BuilderApiController extends ResourceController
                 break;
 
             case 'hform':
+                # Limpa a tabela e suas configurações
+                $this->clearTable($dataBase, $table);
+                # Pega os campos do banco de dados
                 $requestDb['hform'] = $this->DbHformController->ShowHColumnFromTable($table);
+                // myPrint('$requestDb :: ', $requestDb);
+                $variable = $requestDb['hform'];
+                if (count($variable) > 0) {
+                    # Adiciona banco de dados
+                    $resultAddDatabase = $this->addDatabase($dataBase);
+                    $idDataBase = isset($resultAddDatabase['insertID']) ? ($resultAddDatabase['insertID']) : (null);
+                    # Adiciona campos no banco de dados
+                    $this->addFields($variable, $dataBase, $table);
+                    #
+                    $ind2 = 1;
+                    $defineId = null;
+                    #
+                    foreach ($variable as $key => $value) {
+                        # Atualiza os campos do banco de dados
+                        $resultnupdateFields = $this->updateFields($ind2, $dataBase, $table);
+                        $returnId = isset($resultnupdateFields['returnId']) ? ($resultnupdateFields['returnId']) : ($defineId);
+                        $defineId = $returnId;
+                        # Atualiza registros no banco de dados
+                        $this->updateRows($defineId, $value, $idDataBase);
+                        $ind2++;
+                    }
+                }
                 break;
 
             case 'sgc':
-                $this->DbFormBuilderController->dbDelete('database', $dataBase);
-                $this->DbFormBuilderFieldController->dbDelete('table', $table);
-                #
-                // exit('FIM');
+                # Limpa a tabela e suas configurações
+                $this->clearTable($dataBase, $table);
+                # Pega os campos do banco de dados
                 $requestDb['sgc'] = $this->DbSgcController->ShowHColumnFromTable($table);
                 $variable = $requestDb['sgc'];
                 if (count($variable) > 0) {
-                    $dbCreate = array(
-                        'database' => $dataBase,
-                    );
-                    $this->DbFormBuilderController->dbCreate($dbCreate);
-                    $ind = 1;
+                    # Adiciona banco de dados
+                    $resultAddDatabase = $this->addDatabase($dataBase);
+                    $idDataBase = isset($resultAddDatabase['insertID']) ? ($resultAddDatabase['insertID']) : (null);
+                    # Adiciona campos no banco de dados
+                    $this->addFields($variable, $dataBase, $table);
+                    #
+                    $ind2 = 1;
+                    $defineId = null;
+                    #
                     foreach ($variable as $key => $value) {
-                        $dbCreate = array(
-                            'database' => $dataBase,
-                            'table' => $table,
-                            'column' => $value,
-                            'form_on' => 'Y',
-                            'order' => $ind,
-                        );
-                        $this->DbFormBuilderFieldController->dbCreate($dbCreate);
-                        $ind++;
+                        # Atualiza os campos do banco de dados
+                        $resultnupdateFields = $this->updateFields($ind2, $dataBase, $table);
+                        $returnId = isset($resultnupdateFields['returnId']) ? ($resultnupdateFields['returnId']) : ($defineId);
+                        $defineId = $returnId;
+                        # Atualiza registros no banco de dados
+                        $this->updateRows($defineId, $value, $idDataBase);
+                        $ind2++;
                     }
-                    $ind = 0;
-                    foreach ($variable as $key => $value) {
-                        $dbUpdate = array(
-                            'label' => $this->getLabel($value),
-                            'sub_type' => $this->getType($value),
-                        );
-                        myPrint('$dbUpdate :: ', $dbUpdate, true);
-                        $this->DbFormBuilderFieldController->dbUpdate(['column' => $value], $dbUpdate);
-                        $ind++;
-                    }
-                    exit('FIM');
                 }
                 break;
 
@@ -265,10 +373,6 @@ class BuilderApiController extends ResourceController
                 break;
         }
         #
-        foreach ($requestDb as $key => $value) {
-            # code...
-        }
-        myPrint('$requestDb :: ', $requestDb);
         try {
             #
             $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
@@ -278,14 +382,15 @@ class BuilderApiController extends ResourceController
             // myPrint('Exception $e :: ', $e->getMessage());
             $response = $this->response->setStatusCode(500)->setJSON($apiRespond);
         }
+        return $response;
 
     }
 
-    # route POST /www/index.php/projeto/objeto/api/filtrar/(:any)
-    # route GET /www/index.php/projeto/objeto/api/filtrar/(:any)
+    # route POST /www/index.php/hform/api/builder/filtrar/(:any)
+    # route GET /www/index.php/hform/api/builder/filtrar/(:any)
     # Informação sobre o controller
     # retorno do controller [JSON]
-    public function dbFilter($parameter = NULL)
+    public function dbFilter1($parameter = NULL)
     {
         $request = service('request');
         $apiRespond['getMethod'] = $request->getMethod();
@@ -294,6 +399,54 @@ class BuilderApiController extends ResourceController
         $apiRespond['message'] = '403 Forbidden - Directory access is forbidden.';
         return $this->response->setStatusCode(403)->setJSON($apiRespond);
     }
+
+
+    # route POST /www/index.php/hform/api/builder/filtrar/(:any)
+    # route GET /www/index.php/hform/api/builder/filtrar/(:any)
+    # Informação sobre o controller
+    # retorno do controller [JSON]
+    public function dbFilter($parameter = NULL)
+    {
+        # Parâmentros para receber um POST
+        $request = service('request');
+        $getMethod = $request->getMethod();
+        $pageGet = $this->request->getGet('page');
+        $limitGet = $this->request->getGet('limit');
+        $limit = (isset($limitGet) && !empty($limitGet)) ? ($limitGet) : (10);
+        $page = (isset($pageGet) && !empty($pageGet)) ? ($pageGet) : (1);
+        $processRequest = (array) $request->getVar();
+        $json = isset($processRequest['json']) && $processRequest['json'] == 1 ? 1 : 0;
+        $id = isset($processRequest['id']) ? ($processRequest['id']) : ($parameter);
+        #
+        if ($getMethod === 'GET') {
+            $request = service('request');
+            $apiRespond['getMethod'] = $request->getMethod();
+            $apiRespond['method'] = __METHOD__;
+            $apiRespond['function'] = __FUNCTION__;
+            $apiRespond['message'] = '403 Forbidden - Directory access is forbidden.';
+            return $this->response->setStatusCode(403)->setJSON($apiRespond);
+        }
+        myPrint('$processRequest :: ', $processRequest);
+        try {
+            #
+            $requestDb = $this->DbFormBuilderController->dbFilter($processRequest, $page, $limit);
+            #
+            $apiRespond = $this->setApiRespond('success', $getMethod, $requestDb);
+            $response = $this->response->setStatusCode(201)->setJSON($apiRespond);
+        } catch (\Exception $e) {
+            $apiRespond = $this->setApiRespond('error', $getMethod, $requestDb, $e->getMessage());
+            // myPrint('Exception $e :: ', $e->getMessage());
+            $response = $this->response->setStatusCode(500)->setJSON($apiRespond);
+        }
+        if ($json == 1) {
+            return $response;
+            // return redirect()->back();
+            // return redirect()->to('project/endpoint/parameter/parameter/' . $parameter);
+        } else {
+            return $response;
+        }
+    }
+
 
 
     # route POST /www/index.php/projeto/objeto/api/listar/(:any)

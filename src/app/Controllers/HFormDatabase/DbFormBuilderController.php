@@ -250,7 +250,6 @@ class DbFormBuilderController extends BaseController
     # Informação sobre o controller
     # retorno do controller [JSON]
     public function dbDelete($parameter1 = NULL, $parameter2 = NULL)
-    
     {
         try {
             $this->ModelFormBuilder->dbDelete($parameter1, $parameter2);
