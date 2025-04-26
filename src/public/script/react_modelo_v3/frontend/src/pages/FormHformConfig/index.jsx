@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import FormularioHformConfigService from '../../services/hformconfig';
 
+
 const FormularioHformConfig = () => {
 
     const [lista, setLista] = useState([]);
