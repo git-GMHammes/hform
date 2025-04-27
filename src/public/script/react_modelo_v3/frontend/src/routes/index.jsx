@@ -4,23 +4,30 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import FormularioBootstrap from '../pages/FormularioBootstrap';
 import FormularioHformConfig from '../pages/FormularioHformConfig';
+import ContactWhatsapp from '../pages/ContactWhatsapp';
 
 const AppRoutes = () => {
 return (
-    <Routes>
-      {/* Rotas publicas */}
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
+<Routes>
+  {/* Rotas publicas */}
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
 
-      {/* Rotas publicas */}
-      <Route path="/formulario/teste" element={<FormularioBootstrap />} />
-      <Route path="/formulario/config" element={<FormularioHformConfig />} />
+  {/* Rotas publicas */}
+  <Route path="/formulario/config/:param1/:param2/:param3" element={<FormularioHformConfig />} />
+  <Route path="/formulario/config/:param1/:param2" element={<FormularioHformConfig />} />
+  <Route path="/formulario/config/:param1" element={<FormularioHformConfig />} />
+  <Route path="/formulario/config" element={<FormularioHformConfig />} />
+  <Route path="/formulario/teste" element={<FormularioBootstrap />} />
 
-      {/* Rota de redirecionamento */}
-      
-      {/* Rota de fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+  {/* Rota de redirecionamento */}
+  <Route path="/contact" element={<ContactWhatsapp />} />
+
+  {/* Rota de redirecionamento */}
+  
+  {/* Rota de fallback */}
+  <Route path="*" element={<Navigate to="/" replace />} />
+</Routes>
   );
 };
 

@@ -1,6 +1,6 @@
 // C:\laragon\www\hform\src\public\script\react_modelo_v3\frontend\src\pages\FormularioHformConfig\index.jsx
 import React, { useState, useEffect } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+// import { useForm, FormProvider } from 'react-hook-form';
 import FormularioHformConfigService from '../../services/hformconfig';
 
 

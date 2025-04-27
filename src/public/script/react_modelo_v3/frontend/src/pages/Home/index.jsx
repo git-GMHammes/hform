@@ -14,7 +14,7 @@ import script_002 from '../../assets/images/script_002.webp';
 import form_001 from '../../assets/images/form_001.webp';
 import form_002 from '../../assets/images/form_002.png';
 import form_003 from '../../assets/images/form_003.png';
-import form_004 from '../../assets/images/form_004.jpg';
+import form_004 from '../../assets/images/form_004.webp';
 import form_005 from '../../assets/images/form_005.png';
 import form_006 from '../../assets/images/form_006.webp';
 import form_007 from '../../assets/images/form_007.png';
@@ -155,8 +155,8 @@ const Home = () => {
               <button className="btn btn-outline-secondary btn-sm px-4">Documentação</button>
             </div>
           </div>
-          <div className="col-lg-6 text-center">
-            <img src={currentImageDash} alt="Dashboard do sistema" className="img-fluid" />
+          <div className="col-lg-6 text-center y-5">
+            <img src={currentImageDash} alt="Dashboard do sistema" style={{ height: '300px' }} className="img-fluid" />
           </div>
         </section>
 
@@ -220,8 +220,8 @@ const Home = () => {
                   reconhecendo padrões e estruturas importantes para a criação de interfaces eficientes.
                 </p>
               </div>
-              <div className="col-md-6 order-md-1 text-center">
-                <img src={currentImageScript} alt="Script do sistema" className="img-fluid" />
+              <div className="col-md-6 order-md-1 text-center y-5">
+                <img src={currentImageScript} alt="Script do sistema" style={{ height: '300px' }} className="img-fluid" />
               </div>
             </div>
 
@@ -237,8 +237,8 @@ const Home = () => {
                   formatação, seguindo as melhores práticas de UX e acessibilidade.
                 </p>
               </div>
-              <div className="col-md-6 text-center">
-                <img src={currentImageForm} alt="Formulario do sistema" className="img-fluid" />
+              <div className="col-md-6 text-center y-5">
+                <img src={currentImageForm} alt="Formulario do sistema" style={{ height: '300px' }} className="img-fluid" />
               </div>
             </div>
 
@@ -255,7 +255,7 @@ const Home = () => {
                 </p>
               </div>
               <div className="col-md-6 order-md-1 text-center">
-              <img src={currentImageTab} alt="Script do sistema" className="img-fluid" />
+              <img src={currentImageTab} alt="Script do sistema" style={{ height: '300px' }} className="img-fluid" />
               </div>
             </div>
           </div>

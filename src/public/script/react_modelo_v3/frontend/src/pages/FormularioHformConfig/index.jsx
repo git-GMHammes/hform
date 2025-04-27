@@ -2,10 +2,13 @@
 import React, { useState, useEffect } from 'react';
 // import { useForm, FormProvider } from 'react-hook-form';
 import HformConfigService from '../../services/hformconfig';
+import { useParams, Link } from 'react-router-dom';
 
 const FormularioHformConfig = () => {
 
     const [lista, setLista] = useState([]);
+    const { param1, param2, param3 } = useParams();
+
 
     useEffect(() => {
 
@@ -75,6 +78,15 @@ const FormularioHformConfig = () => {
                     <p className="card-text">Total de bancos de dados: {lista.length}</p>
                 </div>
             </div>
+            {param1 && <p className="card-text"><strong>Parâmetro 1:</strong> {param1}</p>}
+            {param2 && <p className="card-text"><strong>Parâmetro 2:</strong> {param2}</p>}
+            {param3 && <p className="card-text"><strong>Parâmetro 3:</strong> {param3}</p>}
+            {/* Links para usar com os parâmetros */}
+            <br/><Link to="/formulario/config/cliente1/banco1/tabela1">Link com três parâmetros</Link>
+            {/* Ou usando elementos HTML puros: */}
+            <br/><a href="#/formulario/config/usuario1/sistema1/modulo1">Exemplo 1 com três parâmetros</a>
+            <br/><a href="#/formulario/config/empresa/financeiro/relatorios">Exemplo 2 com três parâmetros</a>
+            <br/><a href="#/formulario/config/admin/configuracoes/seguranca">Exemplo 3 com três parâmetros</a>
         </div>
     );
 }
