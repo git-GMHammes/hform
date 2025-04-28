@@ -5,6 +5,8 @@ import About from '../pages/About';
 import FormularioBootstrap from '../pages/FormularioBootstrap';
 import FormularioHformConfig from '../pages/FormularioHformConfig';
 import ContactWhatsapp from '../pages/ContactWhatsapp';
+import PosicaoMouse from '../pages/AppModelReact';
+import TamanhoTela from '../pages/AppModelReact';
 
 const AppRoutes = () => {
 return (
@@ -23,7 +25,10 @@ return (
   {/* Rota de redirecionamento */}
   <Route path="/contact" element={<ContactWhatsapp />} />
 
-  {/* Rota de redirecionamento */}
+  {/* Rota de Posição e Mouse */}
+  <Route path="/posicao/mouse" element={<PosicaoMouse />} />
+  <Route path="/tamanho/tela" element={<TamanhoTela />} />
+
   
   {/* Rota de fallback */}
   <Route path="*" element={<Navigate to="/" replace />} />

@@ -100,8 +100,9 @@ function ContactWhatsapp() {
     const mensagemCodificada = encodeURIComponent(mensagemPersonalizada);
 
     // Cria o link do WhatsApp com seu número fixo
+    const linkWhatsapp = `https://wa.me/5521988253970?text=${mensagemCodificada}`;
     // const linkWhatsapp = `https://wa.me/5521980558545?text=${mensagemCodificada}`;
-    const linkWhatsapp = `https://wa.me/5521993220025?text=${mensagemCodificada}`;
+    // const linkWhatsapp = `https://wa.me/5521993220025?text=${mensagemCodificada}`;
 
     // Abre em um popup com tamanho e propriedades específicas
     const popupWidth = 600;

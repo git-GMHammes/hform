@@ -400,7 +400,6 @@ class BuilderApiController extends ResourceController
         return $this->response->setStatusCode(403)->setJSON($apiRespond);
     }
 
-
     # route POST /www/index.php/hform/api/builder/filtrar/(:any)
     # route GET /www/index.php/hform/api/builder/filtrar/(:any)
     # Informação sobre o controller
@@ -446,8 +445,6 @@ class BuilderApiController extends ResourceController
             return $response;
         }
     }
-
-
 
     # route POST /www/index.php/projeto/objeto/api/listar/(:any)
     # route GET /www/index.php/projeto/objeto/api/listar/(:any)

@@ -75,6 +75,9 @@ const NavMenu = () => {
                                     <li><Link className="dropdown-item" to="#"><i className="bi bi-table me-2"></i>Tabelas</Link></li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><Link className="dropdown-item" to="#"><i className="bi bi-graph-up me-2"></i>Gráficos</Link></li>
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <li><Link className="dropdown-item" to="/posicao/mouse"><i className="bi bi-mouse me-2"></i>Posição do Mouse</Link></li>
+                                    <li><Link className="dropdown-item" to="/tamanho/tela"><i className="bi bi-display me-2"></i>Tamanho da Tela</Link></li>
                                 </ul>
                             </li>
 
