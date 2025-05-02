@@ -1,15 +1,10 @@
-// src\public\script\react_modelo_v3\frontend\src\App.jsx
-import { HashRouter } from 'react-router-dom';
-import { useEffect } from 'react';
 import './App.css';
 import './styles/global.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import Header from './components/Header';
-import NavMenu from './components/NavMenu';
-import Footer from './components/Footer';
-import AppRoutes from './routes';
+
+import { HashRouter, useEffect, Header, NavMenu, Footer, AppRoutes } from './components';
 
 function App() {
 
