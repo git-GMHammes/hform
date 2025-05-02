@@ -2,11 +2,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import About from '../pages/About';
-import FormularioBootstrap from '../pages/FormularioBootstrap';
-import FormularioHformConfig from '../pages/FormularioHformConfig';
-import ContactWhatsapp from '../pages/ContactWhatsapp';
-import PosicaoMouse from '../pages/AppModelReact';
-import TamanhoTela from '../pages/AppModelReact';
+import FormBootstrap from '../pages/FormBootstrap';
+import FormHformConfig from '../pages/FormHformConfig';
+import HpWhatsapp from '../pages/HpWhatsapp';
+import PosicaoMouse from '../pages/HpModelReact';
+import TamanhoTela from '../pages/HpModelReact';
 
 const AppRoutes = () => {
 return (
@@ -16,14 +16,14 @@ return (
   <Route path="/about" element={<About />} />
 
   {/* Rotas publicas */}
-  <Route path="/formulario/config/:param1/:param2/:param3" element={<FormularioHformConfig />} />
-  <Route path="/formulario/config/:param1/:param2" element={<FormularioHformConfig />} />
-  <Route path="/formulario/config/:param1" element={<FormularioHformConfig />} />
-  <Route path="/formulario/config" element={<FormularioHformConfig />} />
-  <Route path="/formulario/teste" element={<FormularioBootstrap />} />
+  <Route path="/formulario/config/:param1/:param2/:param3" element={<FormHformConfig />} />
+  <Route path="/formulario/config/:param1/:param2" element={<FormHformConfig />} />
+  <Route path="/formulario/config/:param1" element={<FormHformConfig />} />
+  <Route path="/formulario/config" element={<FormHformConfig />} />
+  <Route path="/formulario/teste" element={<FormBootstrap />} />
 
   {/* Rota de redirecionamento */}
-  <Route path="/contact" element={<ContactWhatsapp />} />
+  <Route path="/contact" element={<HpWhatsapp />} />
 
   {/* Rota de Posição e Mouse */}
   <Route path="/posicao/mouse" element={<PosicaoMouse />} />

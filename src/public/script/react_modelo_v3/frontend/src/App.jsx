@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-import { HashRouter, useEffect, Header, NavMenu, Footer, AppRoutes } from './components';
+import { HashRouter, useEffect, HcHeader, HcNavMenu, HcFooter, AppRoutes } from './importCentralizer';
 
 function App() {
 
@@ -17,12 +17,12 @@ function App() {
   return (
     <HashRouter>
       <div className="app-container bg-black text-white">
-        <Header />
-        <NavMenu />
+        <HcHeader />
+        <HcNavMenu />
         <main className="main-content">
           <AppRoutes />
         </main>
-        <Footer />
+        <HcFooter />
       </div>
     </HashRouter>
   );

@@ -1,7 +1,7 @@
 // Componentes React
-export { default as Header } from './Header';
-export { default as NavMenu } from './NavMenu';
-export { default as Footer } from './Footer';
+export { default as HcHeader } from '../components/HcHeader';
+export { default as HcNavMenu } from '../components/HcNavMenu';
+export { default as HcFooter } from '../components/HcFooter';
 export { default as AppRoutes } from '../routes';
 
 // Bibliotecas React e React Router
@@ -12,9 +12,9 @@ export { useEffect } from 'react';
     import { 
     HashRouter,
     useEffect,
-    Header, 
-    NavMenu, 
-    Footer, 
+    HcHeader, 
+    HcNavMenu, 
+    HcFooter, 
     AppRoutes
     } from '../importCentralizer';
 */}

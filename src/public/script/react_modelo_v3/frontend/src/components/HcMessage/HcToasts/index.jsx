@@ -1,6 +1,6 @@
 // src\public\script\react_modelo_v1\frontend\src\components\Message\Toasts\index.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Toast, ToastContainer } from 'react-bootstrap';
+import React, { useState, useEffect} from 'react';
+// import { Button, Toast, ToastContainer } from 'react-bootstrap';
 
 // Componente principal para gerenciar múltiplos toasts
 const HcToasts = ({

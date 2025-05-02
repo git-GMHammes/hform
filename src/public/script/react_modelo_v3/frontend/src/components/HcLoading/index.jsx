@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./styles.css";
-import logoProderj from "../../assets/images/logoProderj.png";
+// import logoProderj from "../../assets/images/logoProderj.png";
 
 // Componente HcLoading com efeito de blur e bloqueio de interação
 const HcLoading = ({ openLoading = false }) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function ContactWhatsapp() {
+function HpTesteRotas() {
   // Estado inicial do formulário
   const [formData, setFormData] = useState({
     nome: '',
@@ -213,4 +213,4 @@ function ContactWhatsapp() {
   );
 }
 
-export default ContactWhatsapp;
+export default HpTesteRotas;

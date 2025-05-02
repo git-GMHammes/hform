@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./styles.css";
 // import logoProderj from "../../assets/images/logoProderj.png";
 
-const Footer = () => {
+const HcFooter = () => {
     const [isFixed, setIsFixed] = useState(true);
 
     useEffect(() => {
@@ -88,4 +88,4 @@ const Footer = () => {
     );
 };
 
-export default Footer;
+export default HcFooter;

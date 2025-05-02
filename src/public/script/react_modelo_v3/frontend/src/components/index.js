@@ -1,35 +1,35 @@
 // Bibliotecas React e React Router
 export { HashRouter } from 'react-router-dom';
 // App -------------
-export { default as HcNavHorizontal } from './NavHorizontal';
-export { default as HcNavVertical } from './NavVertical';
-export { default as HcNavMenu } from './NavMenu';
-export { default as HcHeader } from './Header';
-export { default as HcFooter } from './Footer';
+export { default as HcNavHorizontal } from './HcNavHorizontal';
+export { default as HcNavVertical } from './HcNavVertical';
+export { default as HcNavMenu } from './HcNavMenu';
+export { default as HcHeader } from './HcHeader';
+export { default as HcFooter } from './HcFooter';
 // Componentes------
-export { default as HcSlideLeftRightbasicModal } from './Modal/SlideLeftRightbasicModal';
+export { default as HcSlideLeftRightbasicModal } from './HcModal/HcSlideLeftRightbasicModal';
 export { default as HcHformInputTextLetters } from './HForm/HformInputTextLetters';
 export { default as HcHformInputTextNumber } from './HForm/HformInputTextNumber';
 export { default as HcHformInputTextMask } from './HForm/HformInputTextMask';
-export { default as HcSlideUpDownModal } from './Modal/SlideUpDownModal';
-export { default as HcelasticModal } from './Modal/elasticModal';
-export { default as HcPulsateModal } from './Modal/PulsateModal';
-export { default as HcListActions } from './Button/ListActions';
-export { default as HcRotateModal } from './Modal/RotateModal';
-export { default as HcBlurInModal } from './Modal/BlurInModal';
-export { default as HcCalculator } from './Tool/Calculator';
-export { default as HcBasicModal } from './Modal/BasicModal';
-export { default as HcSwingModal } from './Modal/SwingModal';
-export { default as HcShakeModal } from './Modal/ShakeModal';
-export { default as HcfadeModal } from './Modal/fadeModal';
-export { default as HcFlipModal } from './Modal/FlipModal';
-export { default as HcToasts } from './Message/Toasts';
-export { default as HcJSONViewer } from './JSONViewer';
-export { default as HcMessage } from './Message';
-export { default as HcLoading } from './Loading';
-export { default as HcButton } from './Button';
-export { default as HcModal } from './Modal';
-export { default as HcTool } from './Tool';
+export { default as HcSlideUpDownModal } from './HcModal/HcSlideUpDownModal';
+export { default as HcelasticModal } from './HcModal/HcelasticModal';
+export { default as HcPulsateModal } from './HcModal/HcPulsateModal';
+export { default as HcListActions } from './HcButton/HcListActions';
+export { default as HcRotateModal } from './HcModal/HcRotateModal';
+export { default as HcBlurInModal } from './HcModal/HcBlurInModal';
+export { default as HcCalculator } from './HcTool/HcCalculator';
+export { default as HcBasicModal } from './HcModal/HcBasicModal';
+export { default as HcSwingModal } from './HcModal/HcSwingModal';
+export { default as HcShakeModal } from './HcModal/HcShakeModal';
+export { default as HcfadeModal } from './HcModal/HcfadeModal';
+export { default as HcFlipModal } from './HcModal/HcFlipModal';
+export { default as HcToasts } from './HcMessage/HcToasts';
+export { default as HcJsonViewer } from './HcJsonViewer';
+export { default as HcMessage } from './HcMessage';
+export { default as HcLoading } from './HcLoading';
+export { default as HcButton } from './HcButton';
+export { default as HcModal} from './HcModal';
+export { default as HcTool } from './HcTool';
 
 // Hooks do React
 export {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function AppModelReact() {
+function HpModelReact() {
     // Estado para armazenar as dimensões da tela e posição do mouse
     const [larguraTela, setLarguraTela] = useState(window.innerWidth);
     const [alturaTela, setAlturaTela] = useState(window.innerHeight);
@@ -71,4 +71,4 @@ function AppModelReact() {
     );
 }
 
-export default AppModelReact;
+export default HpModelReact;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const NavHorizontal = () => {
+const HcNavHorizontal = () => {
     const location = useLocation();
 
     // Verifica se a rota atual está ativa
@@ -70,12 +70,9 @@ const NavHorizontal = () => {
                 { path: '/pagina-provisoria', name: 'Teste Botão' },
                 { path: '/pagina-modal', name: 'Teste Modal' },
                 { path: '/pagina-toasts-react', name: 'Pg Toast' },
-<<<<<<< HEAD
-                { path: '/pagina-tools', name: 'Pg Tools' }
-=======
+                { path: '/pagina-tools', name: 'Pg Tools' },
                 { path: '/colaborador-nicholas-empresa', name: 'N1 Empresa' },
                 { path: '/colaborador-nicholas-contato', name: 'N1 Contato' }
->>>>>>> 97165873e40c569cc33535f53f327f2d54d45934
             ]
         },
         { path: '/about', name: 'Sobre' }
@@ -158,4 +155,4 @@ const NavHorizontal = () => {
     );
 };
 
-export default NavHorizontal;
+export default HcNavHorizontal;

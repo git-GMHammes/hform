@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles.css';
 
-const NavVertical = ({ isOpen, toggleNav }) => {
+const HcNavVertical = ({ isOpen, toggleNav }) => {
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -78,12 +78,9 @@ const NavVertical = ({ isOpen, toggleNav }) => {
         { path: '/pagina-provisoria', name: 'Tes Btn' },
         { path: '/pagina-modal', name: 'Pg Modal' },
         { path: '/pagina-toasts-react', name: 'Pg Toast' },
-<<<<<<< HEAD
-        { path: '/pagina-tools', name: 'Pg Tools' }
-=======
+        { path: '/pagina-tools', name: 'Pg Tools' },
         { path: '/colaborador-nicholas-empresa', name: 'N1 Empresa' },
         { path: '/colaborador-nicholas-contato', name: 'N1 Contato' }
->>>>>>> 97165873e40c569cc33535f53f327f2d54d45934
       ]
     },
     { path: '/about', name: 'Sobre', icon: 'bi-info-circle-fill' }
@@ -211,4 +208,4 @@ const NavVertical = ({ isOpen, toggleNav }) => {
   );
 };
 
-export default NavVertical;
+export default HcNavVertical;

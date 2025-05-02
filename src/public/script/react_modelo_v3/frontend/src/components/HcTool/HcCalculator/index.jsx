@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Calculator = () => {
+const HcCalculator = () => {
     const [display, setDisplay] = useState('');
 
     // Adiciona dígito ou operador ao display
@@ -212,4 +212,4 @@ const Calculator = () => {
     );
 };
 
-export default Calculator;
+export default HcCalculator;

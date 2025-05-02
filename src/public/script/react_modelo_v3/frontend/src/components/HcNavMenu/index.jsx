@@ -1,9 +1,9 @@
-StyleSheet.css// src\public\script\react_modelo_v3\frontend\src\components\NavMenu\index.jsx
+StyleSheet.css// src\public\script\react_modelo_v3\frontend\src\components\HcNavMenu\index.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
 
-const NavMenu = () => {
+const HcNavMenu = () => {
     const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 
     const measureWidth = () => {
@@ -103,4 +103,4 @@ const NavMenu = () => {
     );
 };
 
-export default NavMenu;
+export default HcNavMenu;

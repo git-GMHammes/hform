@@ -1,7 +1,7 @@
 // C:\laragon\www\sgcpro\src\public\script\react_modelo_v1\frontend\src\components\Header\index.jsx
 import React, { useState, useEffect } from "react";
-import Calculator from '../../components/Tool/Calculator';
-import DownModa from '../../components/Modal/SlideUpDownModal';
+import Calculator from '../../components/HcTool/HcCalculator';
+import DownModa from '../../components/HcModal/HcSlideUpDownModal';
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./styles.css";
