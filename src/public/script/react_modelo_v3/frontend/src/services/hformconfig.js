@@ -1,7 +1,6 @@
 // C:\laragon\www\hform\src\public\script\react_modelo_v3\frontend\src\services\hformConfig.js
 import axios from 'axios';
 import { getBaseApi } from '../config/env';
-import { get } from 'react-hook-form';
 
 // Obter a URL base do ambiente atual
 const baseUrl = getBaseApi();
