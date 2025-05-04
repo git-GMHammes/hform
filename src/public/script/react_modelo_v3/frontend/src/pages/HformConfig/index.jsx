@@ -1,55 +1,332 @@
-// C:\laragon\www\hform\src\public\script\react_modelo_v3\frontend\src\pages\FormularioHformConfig\index.jsx
-import React, { useState, useEffect } from 'react';
+// C:/laragon/www/hform/src/public/script/react_modelo_v3/frontend/src/pages/FormularioHformConfig/index.jsx
+import React, { useState, useEffect, useRef } from 'react';
 // import { useForm, FormProvider } from 'react-hook-form';
-import HformConfigService from '../../services/hformconfig';
-import { useParams, Link } from 'react-router-dom';
+import FormularioHformConfigService from '../../services/hformconfig';
 
-const FormularioHformConfig = () => {
+const HformConfig = () => {
 
-    const { param1, param2, param3 } = useParams();
-    const [listaDataBase, setListaDataBase] = useState([]);
-    const [listaTable, setListaTable] = useState([]);
-    const [listaColumn, setListaColumns] = useState([]);
-    const [showDatabase, setShowDatabase] = useState('show');
+    const [listDatabase, setListDatabase] = useState([]);
+    const [listTable, setListTable] = useState([]);
+    const [defineDataBase, setDefineDataBase] = useState('');
+    const [defineTable, setDefineTable] = useState('');
+    const [listColumns, setListColumns] = useState([]);
+    const [showDatabase, setShowDatabase] = useState('');
     const [showTable, setShowTable] = useState('');
-    const [showColumn, setShowColumn] = useState('');
-    const [collapsedDatabase, setCollapsedDatabase] = useState('');
-    const [collapsedTable, setCollapsedTable] = useState('');
-    const [collapsedColumn, setCollapsedColumn] = useState('');
+    const [showCollumn, setShowCollumn] = useState('');
+    const [expandedDatabase, setExpandedDatabase] = useState(false);
+    const [expandedTable, setExpandedTable] = useState(false);
+    const [expandedCollumn, setExpandedCollumn] = useState(false);
+    const [collapsedDatabase, setCollapsedDatabase] = useState('collapsed');
+    const [collapsedTable, setCollapsedTable] = useState('collapsed');
+    const [collapsedCollumn, setCollapsedCollumn] = useState('collapsed');
+    const [loadDatabase, setLoadDatabase] = useState(false);
+    const [loadTable, setLoadTable] = useState(false);
+    const [loadCollumn, setLoadCollumn] = useState(false);
 
-    const resetColapsedShow = () => {
-        console.log('resetColapsedShow()');
-        setShowDatabase('')
-        setShowTable('show')
-        setShowColumn('')
-        setCollapsedDatabase('collapsed')
-        setCollapsedTable('')
-        setCollapsedColumn('collapsed')
+    // Novos estados para o tamanho da div
+    const [divDimensions, setDivDimensions] = useState({ width: 0, height: 0 });
+    const accordionRef = useRef(null);
+
+    // Função para medir o tamanho da div
+    const measureDivSize = () => {
+        if (accordionRef.current) {
+            const { offsetWidth, offsetHeight } = accordionRef.current;
+            setDivDimensions({
+                width: offsetWidth,
+                height: offsetHeight
+            });
+        }
     };
 
-    useEffect(() => {
-        const fetchGetDataBase = async () => {
-            setShowDatabase('show')
-            setShowTable('')
-            setShowColumn('')
-            setCollapsedDatabase('')
-            setCollapsedTable('collapsed')
-            setCollapsedColumn('collapsed')
+    const clearSelection = () => {
+        
+        // Configura o estado para mostrar apenas o banco de dados
+        setShowDatabase('');
+        setShowTable('');
+        setShowCollumn('');
 
-            try {
-                const response = await HformConfigService.getAllDataBase();
-                // console.log('Resposta do getAll:', response);
-                if (response.length > 0) {
-                    setListaDataBase(response);
-                }
-            } catch (err) {
-                console.error('Erro:', err);
+        // Atualiza os estados de expansão
+        setExpandedDatabase(false);
+        setExpandedTable(false);
+        setExpandedCollumn(false);
+
+        // Atualiza os estados de colapso
+        setCollapsedDatabase('collapsed');
+        setCollapsedTable('collapsed');
+        setCollapsedCollumn('collapsed');
+
+        // Limpa as seleções e busca os bancos de dados novamente
+        setDefineDataBase('');
+        setDefineTable('');
+        setListDatabase([]);
+        setListTable([]);
+        setListColumns([]);
+        getHformDataBase();
+
+        setTimeout(() => {
+            // console.log('src/public/script/react_modelo_v3/frontend/src/pages/FormHformConfig/index.jsx');
+            // console.log('clearSelection');
+            // console.log('------------------------------');
+            // console.log('showDatabase :: ', showDatabase);
+            // console.log('showTable :: ', showTable);
+            // console.log('showCollumn :: ', showCollumn);
+            // console.log('------------------------------');
+            // console.log('expandedDatabase :: ', expandedDatabase);
+            // console.log('expandedTable :: ', expandedTable);
+            // console.log('expandedCollumn :: ', expandedCollumn);
+
+            // Medir novamente após as mudanças serem aplicadas
+            measureDivSize();
+        }, 1000);
+    }
+
+    {/* DATABASE BK */ }
+    const getHformDataBase = async () => {
+        try {
+            setLoadDatabase(true);
+            const response = await FormularioHformConfigService.getAllDataBase();
+            if (response.length > 0) {
+                // console.log('src/public/script/react_modelo_v3/frontend/src/pages/FormHformConfig/index.jsx');
+                // console.log('getHformDataBase getAll:', response);
+                setListDatabase(response);
+
+                setTimeout(() => {
+                    setShowDatabase('show');
+                    setShowTable('');
+                    setShowCollumn('');
+                    setExpandedDatabase(true);
+                    setExpandedTable(false);
+                    setExpandedCollumn(false);
+                    setCollapsedDatabase('');
+                    setCollapsedTable('collapsed');
+                    setCollapsedCollumn('collapsed');
+
+                    // Medir novamente após as mudanças serem aplicadas
+                    measureDivSize();
+                    setLoadDatabase(false);
+                }, 1000);
             }
-        };
+        } catch (err) {
+            console.error('Erro circuitos:', err);
+        }
+    }
+
+    {/* TABLE BK */ }
+    const getHformTable = async (dataBase = defineDataBase) => {
+        try {
+            setLoadTable(true);
+            const response = await FormularioHformConfigService.getAllTable(dataBase);
+            if (response.length > 0) {
+                // console.log('src/public/script/react_model\o_v3/frontend/src/pages/FormHformConfig/index.jsx');
+                // console.log('getHformTable getAll:', response[0]);
+                setListTable(response[0]);
+
+                setTimeout(() => {
+                    setShowDatabase('');
+                    setShowTable('show');
+                    setShowCollumn('');
+                    setExpandedDatabase(false);
+                    setExpandedTable(true);
+                    setExpandedCollumn(false);
+                    setCollapsedDatabase('collapsed');
+                    setCollapsedTable('');
+                    setCollapsedCollumn('collapsed');
+
+                    // Medir novamente após as mudanças serem aplicadas
+                    measureDivSize();
+                    setLoadTable(false);
+                }, 1000);
+            }
+        } catch (err) {
+            console.error('Erro circuitos:', err);
+        }
+    }
+
+    {/* COLLUMN BK */ }
+    const getHformCollumn = async (dataBase = defineDataBase, table = defineTable) => {
+        try {
+            setLoadCollumn(true);
+            const response = await FormularioHformConfigService.getAllColumns(dataBase, table);
+            if (response[dataBase].length > 0) {
+                // console.log('src/public/script/react_modelo_v3/frontend/src/pages/FormHformConfig/index.jsx');
+                // console.log('getHformCollumn getAll:', response[dataBase]);
+                setListColumns(response[dataBase]);
+
+                setTimeout(() => {
+                    setShowDatabase('');
+                    setShowTable('');
+                    setShowCollumn('show');
+                    setExpandedDatabase(false);
+                    setExpandedTable(false);
+                    setExpandedCollumn(true);
+                    setCollapsedDatabase('collapsed');
+                    setCollapsedTable('collapsed');
+                    setCollapsedCollumn('');
+                    setLoadCollumn(false);
+                }, 1000);
+                // Medir novamente após as mudanças serem aplicadas
+                measureDivSize();
+            }
+        } catch (err) {
+            console.error('Erro circuitos:', err);
+        }
+    }
+
+    const renderSpinner = (color) => {
+        switch (color) {
+            case 'primary':
+                return (
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'secondary':
+                return (
+                    <div className="spinner-border text-secondary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'success':
+                return (
+                    <div className="spinner-border text-success" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'danger':
+                return (
+                    <div className="spinner-border text-danger" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'warning':
+                return (
+                    <div className="spinner-border text-warning" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'info':
+                return (
+                    <div className="spinner-border text-info" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'light':
+                return (
+                    <div className="spinner-border text-light" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            case 'dark':
+                return (
+                    <div className="spinner-border text-dark" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                );
+        }
+    };
+
+    const renderDatabaseResult = () => {
+        return (
+            <>
+                <div className="row g-1">
+                    {listDatabase.map((item, index) => (
+                        <div key={index} className="col-12 col-sm-4 m-2">
+                            <div className="card border-primary">
+                                <div className="card-header">
+                                    <button
+                                        className="btn btn w-100"
+                                        onClick={() => {
+                                            setListColumns([]);
+                                            setShowDatabase('');
+                                            setShowTable('');
+                                            setShowCollumn('');
+                                            setExpandedDatabase(false);
+                                            setExpandedTable(false);
+                                            setExpandedCollumn(false);
+                                            setCollapsedDatabase('collapsed');
+
+                                            getHformTable(item.database);
+                                            setDefineDataBase(item.database)
+                                        }}>
+                                        {`[${++index}] ${item.database}`}
+                                    </button>
+                                </div>
+                                <div className="card-body">
+                                    <br />{item.clientInfo}
+                                    <br />{item.hostInfo}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </>
+        );
+    }
+
+    const renderTableResult = () => {
+        return (
+            <>
+                <div className="row g-1 ">
+                    {listTable.map((item, index) => (
+                        <div key={index} className="col-12 col-sm-4 m-2">
+                            <div className="card border-success">
+                                <div className="card-header">
+                                    <div className="d-flex justify-content-between mb-2">
+                                        <div>{`[${++index}]`}</div>
+                                        <div>{`${item}`}</div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <div className="card-body">
+                                    <button
+                                        className="btn btn w-100"
+                                        onClick={() => {
+                                            setShowTable('');
+                                            setCollapsedTable('collapsed');
+                                            getHformCollumn(defineDataBase, item);
+                                            setDefineTable(item)
+                                        }}>
+                                        View Collumns
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </>
+        );
+    }
+
+    const renderCollumnResult = () => {
+        return (
+            <>
+                <div className="row g-1">
+                    {listColumns.map((item, index) => (
+                        <div key={index} className="col-12 col-sm-4 m-2">
+                            <div className='d-flex justify-content-between border border-warning rounded-pill'>
+                                <div className="p-2">{`${++index})`}</div>
+                                <div className="p-2">{`${item}`}</div>
+                                <div></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+            </>
+        );
+    }
+
+    useEffect(() => {
 
         const initializeData = async () => {
             try {
-                await fetchGetDataBase();
+                await getHformDataBase();
                 // setDebugMyPrint(true);
 
             } catch (err) {
@@ -62,293 +339,149 @@ const FormularioHformConfig = () => {
 
         initializeData();
 
+        // Medir tamanho inicial da div
+        measureDivSize();
+
+        // Adicionar event listener para redimensionamento
+        window.addEventListener('resize', measureDivSize);
+
+        // Adicionar event listener para mudanças na exibição do acordeão
+        const accordionElement = document.getElementById('accordionFlushConfigGeral');
+        if (accordionElement) {
+            // Usar MutationObserver para detectar mudanças na DOM
+            const observer = new MutationObserver(measureDivSize);
+            observer.observe(accordionElement, {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
+        }
+
+        // Cleanup function
+        return () => {
+            window.removeEventListener('resize', measureDivSize);
+            // Desconectar o observer
+            const accordionElement = document.getElementById('accordionFlushConfigGeral');
+            if (accordionElement) {
+                const observer = new MutationObserver(() => { });
+                observer.disconnect();
+            }
+        };
     }, []);
 
     useEffect(() => {
+        const accordionElement = document.getElementById('accordionFlushConfigGeral');
+        if (accordionElement) {
+            accordionElement.addEventListener('shown.bs.collapse', measureDivSize);
+            accordionElement.addEventListener('hidden.bs.collapse', measureDivSize);
 
-        setListaTable([]);
-        setListaColumns([]);
-
-        if (param1 === undefined) {
-            return; // Sai do useEffect sem fazer a chamada de API
+            return () => {
+                accordionElement.removeEventListener('shown.bs.collapse', measureDivSize);
+                accordionElement.removeEventListener('hidden.bs.collapse', measureDivSize);
+            };
         }
-
-        const fetchGetTable = async (getDataBase = param1) => {
-            try {
-                const response = await HformConfigService.getAllTable(getDataBase);
-                // console.log('Resposta do fetchGetTable:', response);
-                if (
-                    response !== undefined &&
-                    response[0] !== undefined &&
-                    response[0].length > 0
-                ) {
-                    setListaTable(response[0]);
-                }
-
-                if (response !== undefined && response[0] !== undefined && response[0].length > 0) {
-                    // Se tiver tabelas, abre o painel de tabelas
-                    setListaTable(response[0]);
-                    setShowDatabase('')
-                    setShowTable('show')
-                    setShowColumn('')
-                    setCollapsedDatabase('collapsed')
-                    setCollapsedTable('')
-                    setCollapsedColumn('collapsed')
-                } else {
-                    // Se não tiver tabelas, mantém o painel de bancos aberto
-                    setShowDatabase('show')
-                    setShowTable('')
-                    setShowColumn('')
-                    setCollapsedDatabase('')
-                    setCollapsedTable('collapsed')
-                    setCollapsedColumn('collapsed')
-                }
-            } catch (err) {
-                console.error('Erro:', err);
-            }
-
-        }
-
-        const initializeData = async () => {
-            try {
-                await fetchGetTable();
-                // setDebugMyPrint(true);
-
-            } catch (err) {
-                console.error('Erro na inicialização dos dados:', err);
-
-            } finally {
-                console.log('useEffect finalizado');
-            }
-        };
-
-        initializeData();
-
-    }, [param1]);
-
-    useEffect(() => {
-        setListaColumns([]);
-
-        if (param1 === undefined || param2 === undefined) {
-            return; // Sai do useEffect sem fazer a chamada de API
-        }
-
-        const fetchColumns = async (getDataBase = param1, getTable = param2) => {
-            console.log('getDataBase:', getDataBase);
-            console.log('getTable:', getTable);
-            try {
-                const response = await HformConfigService.getAllColumns(getDataBase, getTable);
-                console.log('Resposta do fetchColumns:', response[param1]);
-                if (
-                    response !== undefined &&
-                    response[param1] !== undefined &&
-                    response[param1].length > 0
-                ) {
-                    setListaColumns(response[param1]);
-                }
-
-                if (response !== undefined && response[param1] !== undefined && response[param1].length > 0) {
-                    // Se tiver colunas, abre o painel de colunas
-                    setListaColumns(response[param1]);
-                    setShowDatabase('')
-                    setShowTable('')
-                    setShowColumn('show')
-                    setCollapsedDatabase('collapsed')
-                    setCollapsedTable('collapsed')
-                    setCollapsedColumn('')
-                } else {
-                    // Se não tiver colunas, mantém o painel de tabelas aberto
-                    setShowDatabase('')
-                    setShowTable('show')
-                    setShowColumn('')
-                    setCollapsedDatabase('collapsed')
-                    setCollapsedTable('')
-                    setCollapsedColumn('collapsed')
-                }
-
-            } catch (err) {
-                console.error('Erro:', err);
-            }
-        }
-
-        const initializeData = async () => {
-            try {
-                await fetchColumns();
-                // setDebugMyPrint(true);
-
-            } catch (err) {
-                console.error('Erro na inicialização dos dados:', err);
-
-            } finally {
-                console.log('useEffect finalizado');
-            }
-        };
-
-        initializeData();
-
-    }, [param1, param2]);
-
-    {/* RENDER DATABASE BK */ }
-    const renderDataBase = () => {
-        return (
-            <>
-                {listaDataBase.length === 0 ? (
-                    <div className="alert alert-info">Carregando dados...</div>
-                ) : (
-                    <div className="table-responsive">
-                        <table className="table table-striped table-hover">
-                            <thead className="table-dark">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Banco de Dados</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Host</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {listaDataBase.map((item, index) => (
-                                    <tr key={index}>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>
-                                            <a className='ms-2 btn w-100 text-start'
-                                                onClick={resetColapsedShow}
-                                                href={`#/formulario/config/${item.database}`}
-                                                role='button'
-                                            >
-                                                {item.database}
-                                            </a>
-                                        </td>
-                                        <td>{item.clientInfo}</td>
-                                        <td>{item.hostInfo}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <div className="card mt-3">
-                            <div className="card-body">
-                                <p className="card-text">Total de bancos de dados: {listaDataBase.length}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </>
-        );
-    }
-
-    {/* RENDER TABELA BK */ }
-    const renderTable = () => {
-        return (
-            <>
-                {(listaTable.length !== 0) && (
-                    <div className="mt-5">
-                        <h2 className="mb-4">Lista de Tabelas do Banco {`${param1}`}</h2>
-                        <div className="row g-2">
-                            {listaTable.map((item, index) => (
-                                <div key={index} className="col-12 col-sm-4 y-4">
-                                    <div className="card text-center">
-                                        <div className="card-body">
-                                            <a className='ms-2 btn w-100 text-start'
-                                                href={`#/formulario/config/${param1}/${item}`}
-                                                role='button'
-                                            >
-                                                {item}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="card mt-3">
-                            <div className="card-body">
-                                <p className="card-text">Total de Tabelas: {listaTable.length}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </>
-        );
-    }
-
-    {/* RENDER COLLUMN */ }
-    const renderColumn = () => {
-        return (
-            <>
-                {(listaColumn.length !== 0) && (
-                    <div className="mt-5">
-                        <div className="row g-2">
-                            {listaColumn.map((item, index) => (
-                                <div key={index} className="col-12 col-sm-4 y-4">
-                                    <div className="card text-center">
-                                        <div className="card-body">
-                                            <a className='ms-2 btn w-100 text-start'
-                                                href={`#/formulario/config/${param1}/${param2}/${item}`}
-                                                role='button'
-                                            >
-                                                {item}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="card mt-3">
-                            <div className="card-body">
-                                <p className="card-text">Total de Colunas: {listaColumn.length}</p>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </>
-        );
-    }
+    }, []);
 
     return (
         <>
-            <br /> {`showDatabase:: ${showDatabase}`}
-            <br /> {`showTable:: ${showTable}`}
-            <br /> {`showDatabase:: ${showColumn}`}
-            <div className="accordion accordion-flush m-4" id="accordionFlushExample">
+            <div className='mt-5 mb-5 p-2'>
+                <button
+                    className="btn btn-outline-primary w-25"
+                    onClick={() => {
+                        clearSelection();
+                    }}>
+                    Limpar Seleção
+                </button>
+            </div>
+
+            <div style={{ display: 'none' }}>
+                {/* Display das dimensões da div */}
+                <div className="float-end badge bg-info text-dark">
+                    <span>Tamanho: {divDimensions.width}px × {divDimensions.height}px</span>
+                </div>
+            </div>
+
+            <div className="accordion accordion-flush p-2" id="accordionFlushConfigGeral" ref={accordionRef}>
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className={`accordion-button ${collapsedDatabase}`} type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-                            Lista de Bancos de Dados
+                        <button
+                            className={`accordion-button ${collapsedDatabase} d-flex align-items-center`}
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseDatabaseOne"
+                            aria-expanded={expandedDatabase}
+                            aria-controls="flush-collapseDatabaseOne"
+                        >
+                            <div className="me-auto">
+                                Banco{defineDataBase ? '' : 's'} de dados: {defineDataBase}
+                            </div>
+                            <div>
+                                {loadDatabase ? renderSpinner('primary') : ''}
+                            </div>
                         </button>
                     </h2>
-                    <div id="flush-collapseOne" className={`accordion-collapse collapse ${showDatabase}`} data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">
-                            {/* Verificação se a listaDataBase está vazia */}
-                            {renderDataBase()}
+                    <div id="flush-collapseDatabaseOne" className={`accordion-collapse collapse ${showDatabase}`} data-bs-parent="#accordionFlushConfigGeral">
+                        <div className="accordion-body ps-1">
+                            {renderDatabaseResult()}
                         </div>
                     </div>
                 </div>
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className={`accordion-button ${collapsedTable}`} type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Lista de Tabelas do Banco
+                        <button
+                            className={`accordion-button ${collapsedTable} d-flex align-items-center`}
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTabbleTwo"
+                            aria-expanded={expandedTable}
+                            aria-controls="flush-collapseTabbleTwo"
+                        >
+                            <div className="me-auto">
+                                Tabela{defineTable ? '' : 's'}: {defineTable}
+                            </div>
+                            <div>
+                                {loadTable ? renderSpinner('success') : ''}
+                            </div>
+
                         </button>
                     </h2>
-                    <div id="flush-collapseTwo" className={`accordion-collapse collapse ${showTable}`} data-bs-parent="#accordionFlushExample">
-                        <div className="accordion-body">
-                            {/* Verificação se a listaDataBase está vazia */}
-                            {renderTable()}
+                    <div id="flush-collapseTabbleTwo" className={`accordion-collapse collapse ${showTable}`} data-bs-parent="#accordionFlushConfigGeral">
+                        <div className="accordion-body ps-1">
+                            {renderTableResult()}
                         </div>
                     </div>
                 </div>
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className={`accordion-button ${collapsedColumn}`} type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                            Lista de colunas da Tabela
+                        <button
+                            className={`accordion-button ${collapsedCollumn} d-flex align-items-center`}
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseFildThree"
+                            aria-expanded={expandedCollumn}
+                            aria-controls="flush-collapseFildThree"
+                        >
+                            <div className="me-auto">
+                                Campos
+                            </div>
+                            <div>
+                                {loadCollumn ? renderSpinner('warning') : ''}
+                            </div>
+
                         </button>
                     </h2>
-                    <div id="flush-collapseThree" className={`accordion-collapse collapse ${showColumn}`} data-bs-parent="#accordionFlushExample">
+                    <div id="flush-collapseFildThree" className={`accordion-collapse collapse ${showCollumn}`} data-bs-parent="#accordionFlushConfigGeral">
                         <div className="accordion-body">
-                            {/* Verificação se a listaDataBase está vazia */}
-                            {renderColumn()}
+                            {renderCollumnResult()}
                         </div>
                     </div>
                 </div>
             </div>
+
+            {(divDimensions.height < 190) && (
+                <div className='b-5 p-5'></div>
+            )}
         </>
     );
 }
-export default FormularioHformConfig;
+export default HformConfig;

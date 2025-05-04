@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import FormBootstrap from '../pages/FormBootstrap';
-import FormHformConfig from '../pages/FormHformConfig';
+import HformConfig from '../pages/HformConfig';
+import HformAdvanced from '../pages/HformAdvanced';
 import HpWhatsapp from '../pages/HpWhatsapp';
 import PosicaoMouse from '../pages/HpModelReact';
 import TamanhoTela from '../pages/HpModelReact';
@@ -16,11 +17,12 @@ return (
   <Route path="/about" element={<About />} />
 
   {/* Rotas publicas */}
-  <Route path="/formulario/config/:param1/:param2/:param3" element={<FormHformConfig />} />
-  <Route path="/formulario/config/:param1/:param2" element={<FormHformConfig />} />
-  <Route path="/formulario/config/:param1" element={<FormHformConfig />} />
-  <Route path="/formulario/config" element={<FormHformConfig />} />
-  <Route path="/formulario/teste" element={<FormBootstrap />} />
+  <Route path="/form/config" element={<HformConfig />} />
+  <Route path="/form/advanced/:param1/:param2/:param3" element={<HformAdvanced />} />
+  <Route path="/form/advanced/:param1/:param2" element={<HformAdvanced />} />
+  <Route path="/form/advanced/:param1" element={<HformAdvanced />} />
+  <Route path="/form/advanced" element={<HformAdvanced />} />
+  <Route path="/form/teste" element={<FormBootstrap />} />
 
   {/* Rota de redirecionamento */}
   <Route path="/contact" element={<HpWhatsapp />} />

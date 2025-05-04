@@ -5,6 +5,8 @@ tasklist | findstr 39164
 ### Construir o container
 docker-compose down
 docker system prune -af
+cd C:\laragon\www\hform
+docker stop $(docker ps -aq)
 docker-compose up --build -d
  
 ### Destroi TUDO e limpa o ambiente:

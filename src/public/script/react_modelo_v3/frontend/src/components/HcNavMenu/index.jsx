@@ -57,10 +57,10 @@ const HcNavMenu = () => {
                                     Configuração
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="/formulario/config"><i className="bi bi-sliders me-2"></i>Geral</Link></li>
-                                    <li><Link className="dropdown-item" to="/formulario/config/param1"><i className="bi bi-tools me-2"></i>Avançado</Link></li>
+                                    <li><Link className="dropdown-item" to="/form/config"><i className="bi bi-sliders me-2"></i>Geral</Link></li>
+                                    <li><Link className="dropdown-item" to="/form/advanced"><i className="bi bi-tools me-2"></i>Avançado</Link></li>
                                     <li><hr className="dropdown-divider" /></li>
-                                    <li><Link className="dropdown-item" to="/formulario/config/param1/param2"><i className="bi bi-shield-lock me-2"></i>Segurança</Link></li>
+                                    <li><Link className="dropdown-item" to="/form/config/param1/param2"><i className="bi bi-shield-lock me-2"></i>Segurança</Link></li>
                                 </ul>
                             </li>
 
@@ -71,7 +71,7 @@ const HcNavMenu = () => {
                                     Teste
                                 </a>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="/formulario/teste"><i className="bi bi-file-earmark-text me-2"></i>Formulário</Link></li>
+                                    <li><Link className="dropdown-item" to="/form/teste"><i className="bi bi-file-earmark-text me-2"></i>Formulário</Link></li>
                                     <li><Link className="dropdown-item" to="#"><i className="bi bi-table me-2"></i>Tabelas</Link></li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><Link className="dropdown-item" to="#"><i className="bi bi-graph-up me-2"></i>Gráficos</Link></li>
