@@ -264,8 +264,8 @@ class BuilderApiController extends ResourceController
         }
     }
 
-    # route GET /www/index.php/projeto/objeto/api/salvar/(:any)
-    # route POST /www/index.php/projeto/objeto/api/salvar/(:any)
+    # route GET /www/index.php/hform/api/builder/salvar/(:any)
+    # route POST /www/index.php/hform/api/builder/salvar/(:any)
     # Informação sobre o controller
     # retorno do controller [JSON]
     public function create_update($parameter1 = NULL, $parameter2 = NULL)

@@ -48,6 +48,52 @@ const HformAdvanced = () => {
         setValue('table', '');
     }
 
+    {/* SUBMIT FORM */}
+    const handleSubmit = () => {
+        // Verifica se os campos obrigatórios estão preenchidos
+        if (!defineDataBase || !defineTable) {
+            console.error('Banco de dados e tabela são obrigatórios');
+            // Aqui você pode adicionar alguma notificação para o usuário
+            return;
+        }
+    
+        // Prepara os dados para enviar
+        const formData = {
+            database: defineDataBase,
+            table: defineTable,
+            column: defineCollumn
+        };
+    
+        setTimeout(() => {
+            console.log('src/public/script/react_modelo_v3/frontend/src/pages/HformAdvanced/index.jsx');
+            console.log('----------------------------------');
+            console.log('handleSubmit');
+            console.log('----------------------------------');
+            console.log('defineDataBase ::', defineDataBase);
+            console.log('defineTable ::', defineTable);
+            console.log('formData ::', formData);
+        }, 1000);
+
+        postSalvar(formData);
+    };
+    
+
+    {/* SALVAR SUBMIT */}
+    const postSalvar = async (getValue = {}) => {
+        console.log('frontend/src/pages/HformAdvanced/index.jsx');
+        try {
+            const response = await HformAdvancedService.postSalvar(getValue);
+            console.log('response :: ', response);
+            return false;
+        } catch (error) {
+            if (error.status) {
+                return { error };
+            }
+            console.error('Erro em postSalvar:', error);
+            throw error;
+        }
+    }
+
     {/* DATABASE BK */ }
     const getHformDataBase = async () => {
         try {
@@ -181,6 +227,7 @@ const HformAdvanced = () => {
                         onClick={() => {
                             console.log('Banco selecionado:', defineDataBase);
                             console.log('Tabela selecionada:', defineTable);
+                            handleSubmit();
                         }}
                     >
                         Confirmar Seleção
@@ -245,31 +292,13 @@ const HformAdvanced = () => {
             getHformTable(watchDatabase);
             setValue('table', '');
         }
-        
-        setTimeout(() => {
-            console.log('src/public/script/react_modelo_v3/frontend/src/pages/HformAdvanced/index.jsx');
-            console.log('watchDatabase');
-            console.log('----------------------------------');
-            console.log('----------------------------------');
-            console.log('defineDataBase ::', defineDataBase);
-            console.log('defineTable ::', defineTable);
-        }, 1000);
-        
+
     }, [watchDatabase, setValue]);
-    
+
     useEffect(() => {
         if (watchTable) {
             setDefineTable(watchTable);
         }
-
-        setTimeout(() => {
-            console.log('src/public/script/react_modelo_v3/frontend/src/pages/HformAdvanced/index.jsx');
-            console.log('watchTable');
-            console.log('----------------------------------');
-            console.log('----------------------------------');
-            console.log('defineDataBase ::', defineDataBase);
-            console.log('defineTable ::', defineTable);
-        }, 1000);
 
     }, [watchTable]);
 
